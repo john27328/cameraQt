@@ -57,7 +57,7 @@ private:
 public slots:
     void startLife();
     void stopLife();
-    void initCamera();
+    void initCamera(int c);
     void saveBackground(int n);
     void setSubtractBackground(bool value);
 signals:

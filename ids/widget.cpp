@@ -13,11 +13,11 @@ Widget::Widget(QWidget *parent) :
     //cam = new IdsCam;
     life = new Life();
     createColorMap();
+    connect(ui->initPB, SIGNAL(clicked()), this, SLOT(initCamera()));
     connect(ui->startLifePB, SIGNAL(clicked()), life, SLOT(startLife()));
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetScale()));
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->stopLifePB, SIGNAL(clicked()), life, SLOT(stopLife()));
-    connect(ui->initPB, SIGNAL(clicked()), life, SLOT(initCamera()));
     connect(life, SIGNAL(updateFrame()),this, SLOT(plotColorMap()));
     connect(life, SIGNAL(updateFrame()),this, SLOT(plotSections()));
     connect(ui->resetScalePushButton, SIGNAL(clicked()), this, SLOT(resetScale()));
@@ -148,6 +148,11 @@ void Widget::rescaleSections()
 {
     ui->sectionX->xAxis->setRange(0, life->getWidth_mm());
     ui->sectionY->xAxis->setRange(0, life->getWidth_mm());
+}
+
+void Widget::initCamera()
+{
+    life->initCamera(!ui->testCheckBox->isChecked());
 }
 
 

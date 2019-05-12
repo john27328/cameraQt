@@ -18,7 +18,6 @@ public:
 
 private:
     IdsCam();
-    IdsCam **thisCam;
     HIDS hCam = 0;      // 0 for the next available camera. 1-254 to access by ID
     SENSORINFO sInfo;
     CAMINFO cInfo;

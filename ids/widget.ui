@@ -19,6 +19,13 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
+        <widget class="QCheckBox" name="testCheckBox">
+         <property name="text">
+          <string>тест</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="initPB">
          <property name="text">
           <string>подключить</string>
@@ -104,7 +111,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1,1">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">

@@ -92,7 +92,7 @@ int IdsCam::initCum(Cam **cam)
             return 1;
         }
         else {
-            delete *cam;
+            delete (*cam);
             *cam = 0;
             return 0;
         }
@@ -100,6 +100,7 @@ int IdsCam::initCum(Cam **cam)
     else {
         qDebug() << "delete cam";
         delete (*cam);
+        qDebug() << "!delete cam";
         *cam = 0;
         return 0;
     }
@@ -107,11 +108,17 @@ int IdsCam::initCum(Cam **cam)
 
 IdsCam::~IdsCam()
 {
-    qDebug() << DBG(*thisCam);
+    qDebug() << thisCam;
+    qDebug()<<"~IdsCam";
+
+    //qDebug() << DBG(*thisCam);
     if((*thisCam)){
-        *thisCam = 0;
+        qDebug() << "!";
+        (*thisCam) = 0;
+        qDebug() << "остановка потока";
         stopLive();
         isOK = 0;
+        qDebug() << "освобождение камеры";
         is_FreeImageMem(hCam, ppcImgMem, memID);
         is_ExitCamera(hCam);
         qDebug() << "камера отключена";
@@ -164,16 +171,19 @@ int IdsCam::startLive()
 
 int IdsCam::stopLive()
 {
-    int nRet = is_StopLiveVideo(hCam,IS_FORCE_VIDEO_STOP);
-    if(nRet != IS_SUCCESS) {
-        qDebug() << "ошибка остановки захата";
-        return 0;
+    qDebug() << DBG(isLife);
+    if(isLife){
+        int nRet = is_StopLiveVideo(hCam,IS_FORCE_VIDEO_STOP);
+        if(nRet != IS_SUCCESS) {
+            qDebug() << "ошибка остановки захата";
+            return 0;
+        }
+        is_DisableEvent(hCam, IS_SET_EVENT_FRAME);
+        is_ExitEvent(hCam, IS_SET_EVENT_FRAME);
+        CloseHandle(hEvent);
+        isLife = 0;
+        return 1;
     }
-    is_DisableEvent(hCam, IS_SET_EVENT_FRAME);
-    is_ExitEvent(hCam, IS_SET_EVENT_FRAME);
-    CloseHandle(hEvent);
-    isLife = 0;
-    return 1;
 
 }
 

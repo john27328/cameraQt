@@ -16,7 +16,6 @@ public:
     bool statusCam(); // - 1 - ok
     bool statusLife(); // - 1 - ok
 private:
-    TestCam **thisCam;
     TestCam();
     int fpsCam;
 

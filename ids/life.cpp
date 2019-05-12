@@ -75,10 +75,15 @@ void Life::stopLife()
     }
 }
 
-void Life::initCamera()
+void Life::initCamera(int c)
 {
-    //IdsCam::initCum(&cam);
-    TestCam::initCum(&cam);
+    if (c)
+    {
+        IdsCam::initCum(&cam);
+    }
+    else {
+        TestCam::initCum(&cam);
+    }
 }
 
 void Life::saveBackground(int n)

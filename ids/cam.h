@@ -19,9 +19,6 @@ public:
     virtual bool statusCam() = 0; // - 1 - ok
     virtual bool statusLife() = 0; // - 1 - ok
 
-
-    Cam **thisCam;
-
     int getWidth() const
     {
         return width;
@@ -35,6 +32,8 @@ public:
     {
         return pSize_mkm;
     }
+
+    Cam **thisCam;
 protected:
     int width;
     int height;

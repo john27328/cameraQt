@@ -34,6 +34,7 @@ public slots:
     void saveBackground();
     void plotSections();
     void rescaleSections();
+    void initCamera();
 
 
 };
