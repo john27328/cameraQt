@@ -33,6 +33,7 @@ public slots:
     void background(int state);
     void saveBackground();
     void plotSections();
+    void rescaleSections();
 
 
 };

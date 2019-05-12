@@ -19,9 +19,9 @@ object_script.*.Debug
 *.pro.user.*
 *.qbs.user
 *.qbs.user.*
-*.moc
 moc_*.cpp
 moc_*.h
+moc_*
 qrc_*.cpp
 ui_*.h
 *.qmlc

@@ -26,6 +26,7 @@ Widget::Widget(QWidget *parent) :
     connect(ui->BCGNDpushButton, SIGNAL(clicked()), this, SLOT(saveBackground()));
     connect(life, SIGNAL(stateSaveBCGR(int)), ui->BCGNDprogressBar, SLOT(setValue(int)));
     connect(life, SIGNAL(lifeStartOk()),this, SLOT(createSections()));
+    connect(ui->resetAxis, SIGNAL(clicked()), this, SLOT(rescaleSections()));
 }
 
 Widget::~Widget()
@@ -134,7 +135,6 @@ void Widget::createSections()
 void Widget::plotSections()
 {
     ui->sectionX->graph(0)->setData(*life->pAxisX, *life->pSectionX);
-    qDebug() << (*life->pAxisX)[2000];
     ui->sectionX->yAxis->rescale();
     ui->sectionX->replot();
 
@@ -142,6 +142,12 @@ void Widget::plotSections()
     ui->sectionY->yAxis->rescale();
     ui->sectionY->replot();
 
+}
+
+void Widget::rescaleSections()
+{
+    ui->sectionX->xAxis->setRange(0, life->getWidth_mm());
+    ui->sectionY->xAxis->setRange(0, life->getWidth_mm());
 }
 
 

@@ -74,14 +74,14 @@ int TestCam::getFrame(float **frame)
     double x;
     double y;
     double a = 100;
-    double x0;
+    double x0 = 1000;
     double y0 = 1000;
     double sigmaX = 20;
     double sigmaY = 20;
     double z;
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            x = i; y = j; x0 = k;
+            x = i; y = j;
             z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
                           pow((y - y0),2) / 2 /pow(sigmaY,2)));
             frame[i][j] = rand()%100 + 100 + z;
