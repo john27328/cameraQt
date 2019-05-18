@@ -159,7 +159,7 @@ void Life::average()
     qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
     qDebug() << "average 2";
-    averageState = averageState <= 100 ? averageState + 1 : 0;
+    averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
     qDebug() << "average end" << averageState;
 }
 
