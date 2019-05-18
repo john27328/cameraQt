@@ -70,7 +70,7 @@ void Widget::plotFrame()
         getMax();
         plotColorMap();
         plotSections();
-        //ui->averageState->setValue(life->getAverageState());
+        ui->averageState->setValue(life->getAverageState());
         plot = 0;
 
     }

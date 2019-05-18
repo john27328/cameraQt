@@ -51,7 +51,7 @@ public:
             }
             return *this;
         }
-        Sections &operator/(double const &n){
+        Sections operator/(double const &n){
             Sections tmp = *this;
             for (int i = 0; i < this->x.size(); i++){
                 tmp.x[i] /= n;
