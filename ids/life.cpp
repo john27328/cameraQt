@@ -156,13 +156,7 @@ void Life::average()
     Sections tmp2 = tmp / nAverage;
     averageSections+=tmp / nAverage;
     averageSections-=averageQueue.dequeue() / nAverage;
-<<<<<<< HEAD
-    qDebug() << "average 2";
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
-    qDebug() << "average end" << averageState;
-=======
-    averageState = averageState <= 100 ? averageState + 100/nAverage : 0;
->>>>>>> parent of 82faa20... Revert "удалил ids камеру для отладки"
 }
 
 
