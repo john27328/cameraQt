@@ -45,6 +45,7 @@ public slots:
     void rescaleSections();
     void initCamera();
     void plotFrame();
+    void average();
 
 };
 

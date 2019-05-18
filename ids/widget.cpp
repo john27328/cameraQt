@@ -70,9 +70,15 @@ void Widget::plotFrame()
         getMax();
         plotColorMap();
         plotSections();
+        //ui->averageState->setValue(life->getAverageState());
         plot = 0;
 
     }
+}
+
+void Widget::average()
+{
+    life->startStopAverage(ui->average->checkState(), ui->nAverage->value());
 }
 
 void Widget::createColorMap()
@@ -158,11 +164,11 @@ void Widget::createSections()
 
 void Widget::plotSections()
 {
-    ui->sectionX->graph(0)->setData(*life->pAxisX, *life->pSectionX);
+    ui->sectionX->graph(0)->setData(*life->pAxisX, life->averageSections.x);
     ui->sectionX->yAxis->rescale();
     ui->sectionX->replot();
 
-    ui->sectionY->graph(0)->setData(*life->pAxisY, *life->pSectionY);
+    ui->sectionY->graph(0)->setData(*life->pAxisY, life->averageSections.y);
     ui->sectionY->yAxis->rescale();
     ui->sectionY->replot();
 

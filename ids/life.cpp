@@ -52,6 +52,8 @@ void Life::startLife()
     }
 }
 
+
+
 void Life::stopLife()
 {
     if(ppFrame)
@@ -92,7 +94,7 @@ void Life::saveBackground(int n)
 
 }
 
-void Life::run() //доделать
+void Life::run()
 {
     lifeRun = 1;
     qDebug() << "start Life";
@@ -121,6 +123,46 @@ void Life::setSubtractBackground(bool value)
 {
     sBgnd = value;
 }
+
+void Life::startStopAverage(bool start, int n)
+{
+    qDebug()<<"startStopAverage" << start << n;
+    if(start){
+        averageQueue.clear();
+        nAverage = n;
+        isAverage = 1;
+        //averageQueue = new QQueue<Sections>;
+        for (int i = 0; i < n; i++){
+            Sections tmp = {*pSectionX, *pSectionY};
+            averageQueue.enqueue(tmp);
+            averageState = 0;
+        }
+    }
+    else {
+        isAverage = 0;
+        averageQueue.clear();
+        averageState = 100;
+    }
+    averageSections.x = *pSectionX;
+    averageSections.y = *pSectionY;
+    qDebug()<<"startStopAverage end";
+}
+
+
+void Life::average()
+{
+    Sections tmp = {*pSectionX, *pSectionY};
+    qDebug() << DBG(tmp.y.size());
+    averageQueue.enqueue(tmp);
+    qDebug() << "average 0" << nAverage;
+    averageSections+=tmp / nAverage;
+    qDebug() << "average 1";
+    averageSections-=averageQueue.dequeue() / nAverage;
+    qDebug() << "average 2";
+    averageState = averageState <= 100 ? averageState + 1 : 0;
+    qDebug() << "average end" << averageState;
+}
+
 
 void Life::lookForCenter(MethodCentre method)
 {
@@ -234,6 +276,12 @@ void Life::getFrame()
 //        int x, y;
 //        getCentre(x,y);
         getSections();
+        if(isAverage)
+            average();
+        else {
+            averageSections.x = *pSectionX;
+            averageSections.y = *pSectionY;
+        }
 //        qDebug() << "центр" << x << y;
         //qDebug() << "frame";
         emit updateFrame();
@@ -258,6 +306,11 @@ void Life::createAxis()
         (*pAxisY)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
     }
 
+}
+
+int Life::getAverageState() const
+{
+    return averageState;
 }
 
 

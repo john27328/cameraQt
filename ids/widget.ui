@@ -23,6 +23,12 @@
          <property name="text">
           <string>тест</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -139,6 +145,9 @@
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;уровень, на котором будет вычисляться диаметр пучка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="value">
+            <double>14.000000000000000</double>
+           </property>
           </widget>
          </item>
         </layout>
@@ -247,7 +256,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="nAverage"/>
+          <widget class="QSpinBox" name="nAverage">
+           <property name="value">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="averageState">
+           <property name="value">
+            <number>24</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -345,5 +365,41 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>average</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>Widget</receiver>
+   <slot>average()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>292</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>147</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nAverage</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>Widget</receiver>
+   <slot>average()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>436</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>74</x>
+     <y>7</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>average()</slot>
+ </slots>
 </ui>
