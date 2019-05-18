@@ -81,6 +81,7 @@ void Life::initCamera(int c)
 {
     if (c)
     {
+        IdsCam::initCum(&cam);
     }
     else {
         TestCam::initCum(&cam);
@@ -153,10 +154,13 @@ void Life::average()
     Sections tmp = {*pSectionX, *pSectionY};
     qDebug() << DBG(tmp.y.size());
     averageQueue.enqueue(tmp);
-    Sections tmp2 = tmp / nAverage;
+    qDebug() << "average 0" << nAverage;
     averageSections+=tmp / nAverage;
+    qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
-    averageState = averageState <= 100 ? averageState + 100/nAverage : 0;
+    qDebug() << "average 2";
+    averageState = averageState <= 100 ? averageState + 1 : 0;
+    qDebug() << "average end" << averageState;
 }
 
 
