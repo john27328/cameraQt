@@ -5,6 +5,7 @@
 #include "life.h"
 #include "qcustomplot.h"
 #include <QVector>
+#include <QTimer>
 
 namespace Ui {
 class Widget;
@@ -23,19 +24,27 @@ private:
     Life *life;
     QCPColorMap *colorMap;
     void RescaleCustomPlot(QCustomPlot *plt);
+    bool updateFr = 0;
+    bool plot = 0;
+    QTimer *timer1ms;
+    void plotColorMap();
+    void plotSections();
+    void getMax();
+
+
+
 
 public slots:
+    void updateFrame();
     void createColorMap();
     void createSections();
-    void plotColorMap();
     void resetScale();
     void resetColor();
     void background(int state);
     void saveBackground();
-    void plotSections();
     void rescaleSections();
     void initCamera();
-
+    void plotFrame();
 
 };
 

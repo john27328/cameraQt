@@ -29,6 +29,8 @@ SOURCES += \
         life.cpp \
         main.cpp \
         qcustomplot.cpp \
+        settingdialog.cpp \
+        sliderform.cpp \
         testcam.cpp \
         widget.cpp
 
@@ -37,12 +39,16 @@ HEADERS += \
     idscam.h \
     life.h \
     qcustomplot.h \
+    settingdialog.h \
+    sliderform.h \
     testcam.h \
         widget.h \
     C:/Program Files/IDS/uEye/Develop/include/uEye.h \
     C:/Program Files/IDS/uEye/Develop/include/uEye.h
 
 FORMS += \
+        settingdialog.ui \
+        sliderform.ui \
         widget.ui
 
 

@@ -116,6 +116,7 @@ void Life::run() //доделать
 
 
 
+
 void Life::setSubtractBackground(bool value)
 {
     sBgnd = value;
@@ -160,16 +161,22 @@ void Life::centreIntegrall()
         iX[j] = 0;
     }
 
+    double max;
+    int maxX, maxY;
+    max = maxX = maxY = 0;
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             iX[j] += ppFrame[i][j];
             iY[i] += ppFrame[i][j];
+            if(ppFrame[i][j] > max){
+                max = ppFrame[i][j];
+                maxX = i; maxY = j;
+            }
         }
     }
+    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
 
-    double max;
-    int maxX, maxY;
-    max = maxX = maxY = 0;
+    max = 0;
     for (int i = 0; i < width; i++) {
         if (iY[i] > max) {
             max = iY[i];
@@ -270,6 +277,18 @@ void Life::getSections()
     for (int j = 0; j < height; j++) {
         (*pSectionY)[j] = ppFrame[x][j];
     }
+}
+
+void Life::getMax(int &x, int &y, int &z)
+{
+    x = maxP[0];
+    y = maxP[1];
+    z = maxP[2];
+}
+
+int Life::getBits() const
+{
+    return cam->getBits();
 }
 
 int Life::getWidth() const

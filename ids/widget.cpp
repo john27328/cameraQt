@@ -18,8 +18,8 @@ Widget::Widget(QWidget *parent) :
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetScale()));
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->stopLifePB, SIGNAL(clicked()), life, SLOT(stopLife()));
-    connect(life, SIGNAL(updateFrame()),this, SLOT(plotColorMap()));
-    connect(life, SIGNAL(updateFrame()),this, SLOT(plotSections()));
+    connect(life, SIGNAL(updateFrame()),this, SLOT(updateFrame()));
+    //connect(life, SIGNAL(updateFrame()),this, SLOT(plotSections()));
     connect(ui->resetScalePushButton, SIGNAL(clicked()), this, SLOT(resetScale()));
     connect(ui->resetColorPushButton, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->BCGNDcheckBox,SIGNAL(stateChanged(int)), this, SLOT(background(int)));
@@ -27,6 +27,11 @@ Widget::Widget(QWidget *parent) :
     connect(life, SIGNAL(stateSaveBCGR(int)), ui->BCGNDprogressBar, SLOT(setValue(int)));
     connect(life, SIGNAL(lifeStartOk()),this, SLOT(createSections()));
     connect(ui->resetAxis, SIGNAL(clicked()), this, SLOT(rescaleSections()));
+    timer1ms = new QTimer;
+    timer1ms->start(1);
+    plotFrame();
+    connect(timer1ms,SIGNAL(timeout()),this, SLOT(plotFrame()));
+
 }
 
 Widget::~Widget()
@@ -49,6 +54,25 @@ void Widget::RescaleCustomPlot(QCustomPlot *qPlot)
         {
             qPlot->yAxis->setScaleRatio(qPlot->xAxis, 1.);
         }
+}
+
+void Widget::updateFrame()
+{
+    updateFr = 1;
+}
+
+void Widget::plotFrame()
+{
+    if(updateFr && !plot){
+//        qDebug() << "plotFrame";
+        updateFr = 0;
+        plot = 1;
+        getMax();
+        plotColorMap();
+        plotSections();
+        plot = 0;
+
+    }
 }
 
 void Widget::createColorMap()
@@ -144,6 +168,15 @@ void Widget::plotSections()
 
 }
 
+void Widget::getMax()
+{
+    int x, y, z, bits;
+    life->getMax(x,y,z);
+    bits = life->getBits();
+    qDebug() << "max" << z <<  pow(2,bits) << bits;
+    ui->MaxLcdNumber->display(double(z) / pow(2,bits));
+}
+
 void Widget::rescaleSections()
 {
     ui->sectionX->xAxis->setRange(0, life->getWidth_mm());
@@ -199,7 +232,7 @@ void Widget::resetScale()
 
 void Widget::resetColor()
 {
-    double range = pow(2, 12) * ui->RangeColorSpinBox->value() / 100.;
+    double range = pow(2, life->getBits()) * ui->RangeColorSpinBox->value() / 100.;
     colorMap->setDataRange(QCPRange(0,range));
     ui->colorMap->replot();
 

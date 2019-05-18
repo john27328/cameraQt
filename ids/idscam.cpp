@@ -75,6 +75,7 @@ IdsCam::IdsCam()
         qDebug() << "ошибка выделения памяти";
     }
 
+    bits = 12;
     double fps = 2;
     setFPS(fps);
 

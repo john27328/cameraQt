@@ -9,6 +9,7 @@ TestCam::TestCam()
     pSize_mkm = 5.5;
     qDebug()<<"testCam создан";
     fpsCam = 2;
+    bits = 12;
 }
 
 TestCam::~TestCam()

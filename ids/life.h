@@ -32,7 +32,8 @@ public:
     QVector<double> *pSectionY;
     QVector<double> *pAxisX;
     QVector<double> *pAxisY;
-
+    void getMax(int &x, int &y, int &z);
+    int getBits() const;
 
 
 private:
@@ -52,6 +53,7 @@ private:
     void getFrame();
     void subtractBackground();
     int centre[2];// 0 - x, 1 - y
+    int maxP[3]; // 0 - x, 1 - y, P
     void createAxis();
 
 public slots:
