@@ -159,6 +159,12 @@ void Life::average()
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
 }
 
+void Life::setSliceLevel(double sliceLevel)
+{
+    if (cam)
+        this->sliceLevel = sliceLevel;
+}
+
 
 void Life::lookForCenter(MethodCentre method)
 {
@@ -186,6 +192,8 @@ void Life::centreMax()
         }
     }
     centre[0] = maxX; centre[1] = maxY;
+    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
+
 }
 
 void Life::centreIntegrall()
@@ -278,6 +286,7 @@ void Life::getFrame()
             averageSections.x = *pSectionX;
             averageSections.y = *pSectionY;
         }
+        diameter();
 //        qDebug() << "центр" << x << y;
         //qDebug() << "frame";
         emit updateFrame();
@@ -289,6 +298,36 @@ void Life::subtractBackground()
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
             ppFrame[i][j] -= ppBackground[i][j];
+        }
+    }
+}
+
+void Life::diameter()
+{
+    int max = maxP[2];
+    int level = max * sliceLevel / 100.;
+    for (int i = 0; i < averageSections.x.size()-1; i++) {
+        if(averageSections.x[i] <= level && averageSections.x[i+1] >= level) {
+            diameterMas[0] = i;
+            break;
+        }
+    }
+    for (int i = averageSections.x.size()-1; i > 0; i--) {
+        if(averageSections.x[i] <= level && averageSections.x[i-1]  >= level) {
+            diameterMas[1] = i;
+            break;
+        }
+    }
+    for (int i = 0; i < averageSections.y.size()-1; i++) {
+        if(averageSections.y[i] <= level && averageSections.y[i+1] >= level) {
+            diameterMas[2] = i;
+            break;
+        }
+    }
+    for (int i = averageSections.y.size()-1; i > 0; i--) {
+        if(averageSections.y[i] <= level && averageSections.y[i-1]  >= level) {
+            diameterMas[3] = i;
+            break;
         }
     }
 }
@@ -328,7 +367,7 @@ void Life::getSections()
     }
 }
 
-void Life::getMax(int &x, int &y, int &z)
+void Life::getMax(int &x, int &y, int &z) const
 {
     x = maxP[0];
     y = maxP[1];
@@ -338,6 +377,25 @@ void Life::getMax(int &x, int &y, int &z)
 int Life::getBits() const
 {
     return cam->getBits();
+}
+
+int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
+{
+    if(diameterMas[0] >= 0 &&
+       diameterMas[1] >= 0 &&
+       diameterMas[2] >= 0 &&
+       diameterMas[3] >= 0){
+        x1 = diameterMas[0];
+        x2 = diameterMas[1];
+        y1 = diameterMas[2];
+        y2 = diameterMas[3];
+        return 1;
+    }
+    else {
+        return 0;
+    }
+
+
 }
 
 int Life::getWidth() const
@@ -359,5 +417,15 @@ int Life::getHeight_mm() const
 {
     return height * cam->getPSize_mkm() / 1000.;
 
+}
+
+double Life::pixelTo_mm(int p)
+{
+    return cam->getPSize_mkm()/1000.*p;
+}
+
+bool Life::statusCam()
+{
+    return cam;
 }
 

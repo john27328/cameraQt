@@ -30,6 +30,7 @@ private:
     void plotColorMap();
     void plotSections();
     void getMax();
+    void diametr();
 
 
 
@@ -46,6 +47,7 @@ public slots:
     void initCamera();
     void plotFrame();
     void average();
+    void setSliceLevel();
 
 };
 

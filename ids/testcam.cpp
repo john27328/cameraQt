@@ -74,7 +74,7 @@ int TestCam::getFrame(float **frame)
     Sleep(100);
     double x;
     double y;
-    double a = 100;
+    double a = 2000;
     double x0 = 1000;
     double y0 = 1000;
     double sigmaX = 20;

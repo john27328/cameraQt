@@ -16,6 +16,7 @@ Widget::Widget(QWidget *parent) :
     connect(ui->initPB, SIGNAL(clicked()), this, SLOT(initCamera()));
     connect(ui->startLifePB, SIGNAL(clicked()), life, SLOT(startLife()));
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetScale()));
+    connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(setSliceLevel()));
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->stopLifePB, SIGNAL(clicked()), life, SLOT(stopLife()));
     connect(life, SIGNAL(updateFrame()),this, SLOT(updateFrame()));
@@ -31,7 +32,7 @@ Widget::Widget(QWidget *parent) :
     timer1ms->start(1);
     plotFrame();
     connect(timer1ms,SIGNAL(timeout()),this, SLOT(plotFrame()));
-
+    connect(ui->level,SIGNAL(valueChanged(double)),this,SLOT(setSliceLevel()));
 }
 
 Widget::~Widget()
@@ -71,6 +72,7 @@ void Widget::plotFrame()
         plotColorMap();
         plotSections();
         ui->averageState->setValue(life->getAverageState());
+        diametr();
         plot = 0;
 
     }
@@ -79,6 +81,15 @@ void Widget::plotFrame()
 void Widget::average()
 {
     life->startStopAverage(ui->average->checkState(), ui->nAverage->value());
+}
+
+void Widget::setSliceLevel()
+{
+
+    if(life->statusCam()){
+        double level = ui->level->value();
+        life->setSliceLevel(level);
+    }
 }
 
 void Widget::createColorMap()
@@ -181,6 +192,22 @@ void Widget::getMax()
     bits = life->getBits();
     qDebug() << "max" << z <<  pow(2,bits) << bits;
     ui->MaxLcdNumber->display(double(z) / pow(2,bits));
+}
+
+void Widget::diametr()
+{
+    int x1, x2, y1, y2;
+    double dx, dy;
+    if(life->getDiametr(x1,x2,y1,y2)){
+        dx = life->pixelTo_mm(x2 - x1);
+        dy = life->pixelTo_mm(y2 - y1);
+    }
+    else{
+        dx = NAN;
+        dy = NAN;
+    }
+    ui->dx->display(dx);
+    ui->dy->display(dy);
 }
 
 void Widget::rescaleSections()

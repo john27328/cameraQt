@@ -21,6 +21,8 @@ public:
     int getWidth_mm() const;
     int getHeight() const;
     int getHeight_mm() const;
+    double pixelTo_mm(int p);
+    bool statusCam();
 
 
     void getCentre(int &x, int &) const;
@@ -67,9 +69,9 @@ public:
     Section *pAxisY;
     Sections averageSections;
 
-    void getMax(int &x, int &y, int &z);
+    void getMax(int &x, int &y, int &z) const;
     int getBits() const;
-
+    int getDiametr(int &x1, int &x2, int &y1, int &y2) const;
 
     int getAverageState() const;
 
@@ -91,6 +93,9 @@ private:
     void subtractBackground();
     int centre[2];// 0 - x, 1 - y
     int maxP[3]; // 0 - x, 1 - y, P
+    int diameterMas[4]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2
+    double sliceLevel;
+    void diameter();
     void createAxis();
     QQueue<Sections> averageQueue;
     int nAverage;
@@ -99,6 +104,7 @@ private:
     bool isAverage = 0;
 
 public slots:
+    void setSliceLevel(double slicelevel);
     void startLife();
     void stopLife();
     void initCamera(int c);

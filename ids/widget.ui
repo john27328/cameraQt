@@ -141,7 +141,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="cut">
+          <widget class="QDoubleSpinBox" name="level">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;уровень, на котором будет вычисляться диаметр пучка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -225,6 +225,9 @@
         <widget class="QLCDNumber" name="MaxLcdNumber">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;максимальный уровень сигнала на камере, стараться не превышать 100%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="smallDecimalPoint">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
