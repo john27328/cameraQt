@@ -4,9 +4,10 @@ Life::Life()
 {
     cam = 0;
     stop = 1;
-    lifeRun = 0;
+    frameRun = 0;
     nBackground = 0;
-    ppFrame = 0;
+    ppFrame = nullptr;
+    ppBackground = nullptr;
     sBgnd = 0;
     methodCenter = MethodCentre::CentreIntegrall;
 }
@@ -15,7 +16,7 @@ Life::~Life()
 {
     stop = 1;
 
-    while (lifeRun) {
+    while (frameRun) {
         Sleep(10);
     }
     delete  cam;
@@ -49,7 +50,6 @@ void Life::startLife()
         cam->startLive();
         start();
         emit lifeStartOk();
-        lifeRun = 1;
     }
 }
 
@@ -57,34 +57,33 @@ void Life::startLife()
 
 void Life::stopLife()
 {
-    if(lifeRun){
+    if(stop == 0){
         if(cam){
             cam->stopLive();
             stop = 1;
         }
         if(ppFrame)
         {
-            for (int i = 0; i < width;i++) {
-                delete[] ppFrame[i];
-            }
-            delete[] ppFrame;
+//            for (int i = 0; i < width;i++) {
+//                delete[] ppFrame[i];
+//            }
+//            delete[] ppFrame;
             delete pSectionX;
             delete pSectionY;
             delete pAxisX;
             delete pAxisY;
-            ppFrame = 0;
+            ppFrame = nullptr;
         }
         if(ppBackground)
         {
-            for (int i = 0; i < width;i++) {
-                delete[] ppBackground[i];
-            }
-            delete[] ppBackground;
-            ppBackground = 0;
+//            for (int i = 0; i < width;i++) {
+//                delete[] ppBackground[i];
+//            }
+//            delete[] ppBackground;
+            ppBackground = nullptr;
 
         }
     }
-    lifeRun = 0;
 }
 
 void Life::initCamera(int c, QString &model, QString &serial)
@@ -106,7 +105,7 @@ void Life::saveBackground(int n)
 
 void Life::run()
 {
-    lifeRun = 1;
+    frameRun = 1;
     qDebug() << "start Life";
     while (!stop)
     {
@@ -121,7 +120,7 @@ void Life::run()
 
 
     }
-    lifeRun = 0;
+    frameRun = 0;
     qDebug() << "stop Life";
     exit();
 }

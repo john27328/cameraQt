@@ -89,7 +89,7 @@ public:
 private:
     void run();
     bool stop;
-    bool lifeRun;
+    bool frameRun;
     Cam *cam;
     int width;
     int height;
