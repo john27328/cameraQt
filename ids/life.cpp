@@ -3,7 +3,7 @@
 Life::Life()
 {
     cam = 0;
-    stop = 0;
+    stop = 1;
     lifeRun = 0;
     nBackground = 0;
     ppFrame = 0;
@@ -49,6 +49,7 @@ void Life::startLife()
         cam->startLive();
         start();
         emit lifeStartOk();
+        lifeRun = 1;
     }
 }
 
@@ -56,35 +57,45 @@ void Life::startLife()
 
 void Life::stopLife()
 {
-    if(ppFrame)
-    {
-        for (int i = 0; i < width;i++) {
-            delete[] ppFrame[i];
-            delete[] ppBackground[i];
+    if(lifeRun){
+        if(cam){
+            cam->stopLive();
+            stop = 1;
         }
-        delete[] ppFrame;
-        delete[] ppBackground;
-        delete pSectionX;
-        delete pSectionY;
-        delete pAxisX;
-        delete pAxisY;
-        ppFrame = 0;
-        ppBackground = 0;
+        if(ppFrame)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] ppFrame[i];
+            }
+            delete[] ppFrame;
+            delete pSectionX;
+            delete pSectionY;
+            delete pAxisX;
+            delete pAxisY;
+            ppFrame = 0;
+        }
+        if(ppBackground)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] ppBackground[i];
+            }
+            delete[] ppBackground;
+            ppBackground = 0;
+
+        }
     }
-    if(cam){
-        cam->stopLive();
-        stop = 1;
-    }
+    lifeRun = 0;
 }
 
-void Life::initCamera(int c)
+void Life::initCamera(int c, QString &model, QString &serial)
 {
     if (c)
     {
     }
     else {
-        TestCam::initCum(&cam);
+        TestCam::initCum(&cam, model, serial);
     }
+
 }
 
 void Life::saveBackground(int n)
@@ -168,13 +179,15 @@ void Life::setSliceLevel(double sliceLevel)
 
 void Life::lookForCenter(MethodCentre method)
 {
-    switch (method) {
-    case MethodCentre::CentrerMax:
-        centreMax();
-        break;
-    case MethodCentre::CentreIntegrall:
-        centreIntegrall();
-        break;
+    if(cam){
+        switch (method) {
+        case MethodCentre::CentrerMax:
+            centreMax();
+            break;
+        case MethodCentre::CentreIntegrall:
+            centreIntegrall();
+            break;
+        }
     }
 }
 
@@ -198,47 +211,49 @@ void Life::centreMax()
 
 void Life::centreIntegrall()
 {
-    double *iX = new double[height];
-    double *iY = new double[width];
-    for (int i = 0; i < width; i++) {
-        iY[i] = 0;
-    }
-    for (int j = 0; j < height; j++) {
-        iX[j] = 0;
-    }
-
-    double max;
-    int maxX, maxY;
-    max = maxX = maxY = 0;
-    for (int i = 0; i < width; i++) {
+    if(cam){
+        double *iX = new double[height];
+        double *iY = new double[width];
+        for (int i = 0; i < width; i++) {
+            iY[i] = 0;
+        }
         for (int j = 0; j < height; j++) {
-            iX[j] += ppFrame[i][j];
-            iY[i] += ppFrame[i][j];
-            if(ppFrame[i][j] > max){
-                max = ppFrame[i][j];
-                maxX = i; maxY = j;
+            iX[j] = 0;
+        }
+
+        double max;
+        int maxX, maxY;
+        max = maxX = maxY = 0;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                iX[j] += ppFrame[i][j];
+                iY[i] += ppFrame[i][j];
+                if(ppFrame[i][j] > max){
+                    max = ppFrame[i][j];
+                    maxX = i; maxY = j;
+                }
             }
         }
-    }
-    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
+        maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
 
-    max = 0;
-    for (int i = 0; i < width; i++) {
-        if (iY[i] > max) {
-            max = iY[i];
-            maxX = i;
+        max = 0;
+        for (int i = 0; i < width; i++) {
+            if (iY[i] > max) {
+                max = iY[i];
+                maxX = i;
+            }
         }
-    }
-    max = 0;
-    for (int j = 0; j < height; j++) {
-        if (iX[j] > max) {
-            max = iX[j];
-            maxY = j;
+        max = 0;
+        for (int j = 0; j < height; j++) {
+            if (iX[j] > max) {
+                max = iX[j];
+                maxY = j;
+            }
         }
+        delete [] iX;
+        delete [] iY;
+        centre[0] = maxX; centre[1] = maxY;
     }
-    delete [] iX;
-    delete [] iY;
-    centre[0] = maxX; centre[1] = maxY;
 }
 
 void Life::setBackground()
@@ -273,23 +288,25 @@ void Life::setBackground()
 
 void Life::getFrame()
 {
-    if (cam->getFrame(ppFrame)){
-        //обработка кадра
-        if(sBgnd && !nBackground) subtractBackground();
-        lookForCenter(methodCenter);
-//        int x, y;
-//        getCentre(x,y);
-        getSections();
-        if(isAverage)
-            average();
-        else {
-            averageSections.x = *pSectionX;
-            averageSections.y = *pSectionY;
+    if (cam){
+        if (cam->getFrame(ppFrame)){
+            //обработка кадра
+            if(sBgnd && !nBackground) subtractBackground();
+            lookForCenter(methodCenter);
+            //        int x, y;
+            //        getCentre(x,y);
+            getSections();
+            if(isAverage)
+                average();
+            else {
+                averageSections.x = *pSectionX;
+                averageSections.y = *pSectionY;
+            }
+            diameter();
+            //        qDebug() << "центр" << x << y;
+            //qDebug() << "frame";
+            emit updateFrame();
         }
-        diameter();
-//        qDebug() << "центр" << x << y;
-        //qDebug() << "frame";
-        emit updateFrame();
     }
 }
 
@@ -334,11 +351,13 @@ void Life::diameter()
 
 void Life::createAxis()
 {
-    for (int i = 0; i < width; i++) {
-        (*pAxisX)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
-    }
-    for (int i = 0; i < height; i++) {
-        (*pAxisY)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
+    if (cam){
+        for (int i = 0; i < width; i++) {
+            (*pAxisX)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
+        }
+        for (int i = 0; i < height; i++) {
+            (*pAxisY)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
+        }
     }
 
 }
@@ -346,6 +365,53 @@ void Life::createAxis()
 int Life::getAverageState() const
 {
     return averageState;
+}
+
+double Life::setFPS(double fps)
+{
+    if (cam){
+        cam->setFPS(fps);
+        return fps;
+    }
+    else{
+        return NAN;
+    }
+}
+
+double Life::setExp(double exp)
+{
+    if(cam){
+        cam->setExp(exp);
+        return exp;
+    }
+    else {
+        return NAN;
+    }
+}
+
+double Life::getFPS()
+{
+
+}
+
+void Life::setSetting(double &minFps, double &maxFps, double &fps, double &minExp, double &maxExp, double &exp)
+{
+    if(cam){
+        cam->setFPS(fps);
+        cam->getRangeFPS(minFps, maxFps);
+        cam->setExp(exp);
+        cam->getRangeExp(minExp, maxExp);
+    }
+}
+
+void Life::getSetting(double &minFps, double &maxFps, double &fps, double &minExp, double &maxExp, double &exp)
+{
+    if(cam){
+        cam->getFPS(fps);
+        cam->getRangeFPS(minFps, maxFps);
+        cam->getExp(exp);
+        cam->getRangeExp(minExp, maxExp);
+    }
 }
 
 
@@ -376,15 +442,17 @@ void Life::getMax(int &x, int &y, int &z) const
 
 int Life::getBits() const
 {
-    return cam->getBits();
+    if(cam){
+        return cam->getBits();
+    }
 }
 
 int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
 {
     if(diameterMas[0] >= 0 &&
-       diameterMas[1] >= 0 &&
-       diameterMas[2] >= 0 &&
-       diameterMas[3] >= 0){
+            diameterMas[1] >= 0 &&
+            diameterMas[2] >= 0 &&
+            diameterMas[3] >= 0){
         x1 = diameterMas[0];
         x2 = diameterMas[1];
         y1 = diameterMas[2];
@@ -405,7 +473,9 @@ int Life::getWidth() const
 
 int Life::getWidth_mm() const
 {
-    return width * cam->getPSize_mkm() / 1000.;
+    if(cam){
+        return width * cam->getPSize_mkm() / 1000.;
+    }
 }
 
 int Life::getHeight() const
@@ -415,13 +485,17 @@ int Life::getHeight() const
 
 int Life::getHeight_mm() const
 {
-    return height * cam->getPSize_mkm() / 1000.;
+    if(cam){
+        return height * cam->getPSize_mkm() / 1000.;
+    }
 
 }
 
 double Life::pixelTo_mm(int p)
 {
-    return cam->getPSize_mkm()/1000.*p;
+    if(cam){
+        return cam->getPSize_mkm()/1000.*p;
+    }
 }
 
 bool Life::statusCam()

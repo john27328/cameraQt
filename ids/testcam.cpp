@@ -17,40 +17,56 @@ TestCam::~TestCam()
     qDebug()<<"testCam удален";
 }
 
-int TestCam::initCum(Cam **cam)
+QString TestCam::getModel()
 {
-    qDebug() << DBG(*cam);
-    if(!(*cam)){
-        qDebug() << "init cam";
-        *cam = new TestCam;
-        (*cam)->thisCam = cam;
-        if((*cam)->statusCam()){
-            return 1;
-        }
-        else {
-            delete *cam;
-            *cam = 0;
-            return 0;
-        }
-    }
-    else {
-        qDebug() << "delete cam";
-        delete (*cam);
-        *cam = 0;
-        return 0;
-    }
+    return  "testCam";
 }
+
+QString TestCam::getSerial()
+{
+    return "000";
+}
+
+
 
 int TestCam::setFPS(double &fps)
 {
     fpsCam = fps;
+    fps+=0.1;
+    return 1;
+}
+
+int TestCam::setExp(double &exp)
+{
+    expCam = exp;
+
+    exp-=0.2;
+    return 1;
+}
+
+int TestCam::getFPS(double &fps)
+{
+    fps = fpsCam;
+    return 1;
+}
+
+int TestCam::getExp(double &exp)
+{
+    exp = expCam;
     return 1;
 }
 
 int TestCam::getRangeFPS(double &minFPS, double &maxFPS)
 {
-    minFPS = 1;
-    maxFPS = 100;
+    minFPS = minFps;
+    maxFPS = maxFps;
+    return 1;
+}
+
+int TestCam::getRangeExp(double &minExp, double &maxExp)
+{
+    minExp = this->minExp;
+    maxExp = this->maxExp;
     return 1;
 }
 

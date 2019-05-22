@@ -48,6 +48,8 @@ public slots:
     void plotFrame();
     void average();
     void setSliceLevel();
+    void setSetting();
+    void getSetting();
 
 };
 

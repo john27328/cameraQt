@@ -75,6 +75,17 @@ public:
 
     int getAverageState() const;
 
+    double setFPS(double fps);
+    double setExp(double exp);
+    double getFPS();
+    double getExp();
+    void setSetting(double &minFps, double &maxFps, double &fps,
+                    double &minExp, double &maxExp, double &exp);
+    void getSetting(double &minFps, double &maxFps, double &fps,
+                    double &minExp, double &maxExp, double &exp);
+
+    void initCamera(int c, QString &model, QString &serial);
+
 private:
     void run();
     bool stop;
@@ -107,7 +118,6 @@ public slots:
     void setSliceLevel(double slicelevel);
     void startLife();
     void stopLife();
-    void initCamera(int c);
     void saveBackground(int n);
     void setSubtractBackground(bool value);
     void startStopAverage(bool start, int n);

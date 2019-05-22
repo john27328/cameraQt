@@ -92,6 +92,40 @@ void Widget::setSliceLevel()
     }
 }
 
+void Widget::setSetting()
+{
+    double minFps;
+    double maxFps;
+    double fps = ui->fpsSB->value();
+    double minExp;
+    double maxExp;
+    double exp = ui->expSB->value();
+    life->setSetting(minFps, maxFps, fps, minExp, maxExp, exp);
+    ui->fpsSB->setValue(fps);
+    ui->minFps->display(minFps);
+    ui->maxFps->display(maxFps);
+    ui->expSB->setValue(exp);
+    ui->minExp->display(minExp);
+    ui->maxExp->display(maxExp);
+}
+
+void Widget::getSetting()
+{
+    double minFps;
+    double maxFps;
+    double fps;
+    double minExp;
+    double maxExp;
+    double exp;
+    life->getSetting(minFps, maxFps, fps, minExp, maxExp, exp);
+    ui->fpsSB->setValue(fps);
+    ui->minFps->display(minFps);
+    ui->maxFps->display(maxFps);
+    ui->expSB->setValue(exp);
+    ui->minExp->display(minExp);
+    ui->maxExp->display(maxExp);
+}
+
 void Widget::createColorMap()
 {
     // configure axis rect:
@@ -218,9 +252,11 @@ void Widget::rescaleSections()
 
 void Widget::initCamera()
 {
-    life->initCamera(!ui->testCheckBox->isChecked());
+    QString model, serial;
+    life->initCamera(!ui->testCheckBox->isChecked(), model, serial);
+    ui->model->setText(model);
+    ui->serial->setText(serial);
 }
-
 
 void Widget::plotColorMap()
 {
