@@ -76,35 +76,7 @@ IdsCam::IdsCam()
     }
 
     bits = 12;
-    double fps = 2;
-    setFPS(fps);
 
-}
-
-
-int IdsCam::initCum(Cam **cam)
-{
-    qDebug() << DBG(*cam);
-    if(!(*cam)){
-        qDebug() << "init cam";
-        *cam = new IdsCam;
-        (*cam)->thisCam = cam;
-        if((*cam)->statusCam()){
-            return 1;
-        }
-        else {
-            delete (*cam);
-            *cam = 0;
-            return 0;
-        }
-    }
-    else {
-        qDebug() << "delete cam";
-        delete (*cam);
-        qDebug() << "!delete cam";
-        *cam = 0;
-        return 0;
-    }
 }
 
 IdsCam::~IdsCam()
@@ -126,9 +98,59 @@ IdsCam::~IdsCam()
     }
 }
 
+QString IdsCam::getModel()
+{
+    return sInfo.strSensorName;
+}
+
+QString IdsCam::getSerial()
+{
+    return cInfo.SerNo;
+}
+
 int IdsCam::setFPS(double &fps)
 {
     int nRet = is_SetFrameRate(hCam,fps,&fps);
+    if (nRet == IS_SUCCESS) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+int IdsCam::setExp(double &exp)
+{
+    //E, (void*) &parameter, sizeof(parameter));
+    int nRet = is_Exposure(hCam,
+                           IS_EXPOSURE_CMD_SET_EXPOSURE,
+                           (void *)&exp,
+                           sizeof(exp));
+    if (nRet == IS_SUCCESS) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+int IdsCam::getFPS(double &fps)
+{
+    int nRet = is_GetFramesPerSecond(hCam, &fps);
+    if (nRet == IS_SUCCESS) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+int IdsCam::getExp(double &exp)
+{
+    int nRet = is_Exposure(hCam,
+                           IS_EXPOSURE_CMD_GET_EXPOSURE,
+                           (void *)&exp,
+                           sizeof(exp));
     if (nRet == IS_SUCCESS) {
         return 1;
     }
@@ -144,6 +166,23 @@ int IdsCam::getRangeFPS(double &minFPS, double &maxFPS)
     if (nRet == IS_SUCCESS) {
         minFPS = 1 / maxT;
         maxFPS = 1 / minT;
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+int IdsCam::getRangeExp(double &minExp, double &maxExp)
+{
+    double range[2];
+    int nRet = is_Exposure(hCam,
+                           IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE,
+                           (void *)range,
+                           sizeof(range));
+    if (nRet == IS_SUCCESS) {
+        minExp = range[0];
+        maxExp = range[1];
         return 1;
     }
     else {
