@@ -126,7 +126,7 @@ void Widget::getMax()
     int x, y, z, bits;
     life->getMax(x,y,z);
     bits = life->getBits();
-    qDebug() << "max" << z <<  pow(2,bits) << bits;
+//    qDebug() << "max" << z <<  pow(2,bits) << bits;
     ui->MaxLcdNumber->display(double(z) / pow(2,bits));
 }
 

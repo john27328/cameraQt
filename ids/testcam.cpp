@@ -99,10 +99,10 @@ int TestCam::getFrame(float **frame)
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             x = i; y = j;
-//            z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
-//                          pow((y - y0),2) / 2 /pow(sigmaY,2)));
-//            frame[i][j] = rand()%100 + 100 + z;
-            frame[i][j] = i + j + 100;
+            z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
+                          pow((y - y0),2) / 2 /pow(sigmaY,2)));
+            frame[i][j] = rand()%100 + 100 + z;
+//            frame[i][j] = i + j + 100;
         }
     }
       auto end = std::chrono::steady_clock::now();

@@ -380,7 +380,7 @@
          <item>
           <widget class="QSpinBox" name="nAverage">
            <property name="value">
-            <number>2</number>
+            <number>3</number>
            </property>
           </widget>
          </item>
