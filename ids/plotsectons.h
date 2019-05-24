@@ -1,0 +1,4 @@
+#ifndef PLOTSECTONS_H
+#define PLOTSECTONS_H
+
+#endif // PLOTSECTONS_H

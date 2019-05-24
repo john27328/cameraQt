@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1128</width>
-    <height>509</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -168,7 +168,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="expSB"/>
+        <widget class="QDoubleSpinBox" name="expSB">
+         <property name="singleStep">
+          <double>10.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLCDNumber" name="maxExp">
@@ -491,7 +495,7 @@
    <slot>average()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>292</x>
+     <x>377</x>
      <y>23</y>
     </hint>
     <hint type="destinationlabel">
@@ -507,8 +511,8 @@
    <slot>average()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>436</x>
-     <y>22</y>
+     <x>459</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
      <x>74</x>
@@ -516,8 +520,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>fpsSB</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>Widget</receiver>
+   <slot>setSetting()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>expSB</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>Widget</receiver>
+   <slot>setSetting()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>average()</slot>
+  <slot>setSetting()</slot>
  </slots>
 </ui>

@@ -5,6 +5,8 @@
 #include <math.h>
 #include <QString>
 #define DBG(x) #x << (x)
+typedef QVector<float> FrameLine;
+typedef QVector<FrameLine> Frame;
 
 class Cam
 {
@@ -25,7 +27,7 @@ public:
     virtual int getRangeExp(double &minExp, double &maxExp) = 0;
     virtual int startLive() = 0;
     virtual int stopLive() = 0;
-    virtual int getFrame(float **frame) = 0;
+    virtual int getFrame(Frame &frame) = 0;
     virtual bool statusCam() = 0; // - 1 - ok
     virtual bool statusLife() = 0; // - 1 - ok
     virtual QString getSerial() = 0;

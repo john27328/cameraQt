@@ -23,13 +23,13 @@ public:
     int getHeight_mm() const;
     double pixelTo_mm(int p);
     bool statusCam();
-
+    bool statusLife();
 
     void getCentre(int &x, int &) const;
     void getSections();
     enum class MethodCentre{CentrerMax, CentreIntegrall};
-    float **ppFrame;
-    float **ppBackground;
+    Frame frame;
+    Frame background;
     typedef QVector<double> Section;
 
     struct Sections{

@@ -6,8 +6,6 @@ Life::Life()
     stop = 1;
     frameRun = 0;
     nBackground = 0;
-    ppFrame = nullptr;
-    ppBackground = nullptr;
     sBgnd = 0;
     methodCenter = MethodCentre::CentreIntegrall;
 }
@@ -29,8 +27,6 @@ void Life::startLife()
     if(cam){
         width = cam->getWidth();
         height = cam->getHeight();
-        ppFrame = new float*[width];
-        ppBackground = new float*[width];
         pSectionX = new QVector<double>(width);
         pSectionY = new QVector<double>(height);
         pAxisX = new QVector<double>(width);
@@ -39,12 +35,14 @@ void Life::startLife()
 
         for(int i = 0; i < width; i++)
         {
-            ppFrame[i] = new float[height];
-            ppBackground[i] = new float[height];
+            FrameLine tempFr;
+            FrameLine tempBc;
             for (int j = 0; j < height; j++){
-                ppFrame[i][j] = 0;
-                ppBackground[i][j] = 0;
+                tempFr.append(0);
+                tempBc.append(0);
             }
+            frame.append(tempFr);
+            background.append(tempBc);
         }
         stop = 0;
         cam->startLive();
@@ -57,33 +55,19 @@ void Life::startLife()
 
 void Life::stopLife()
 {
-    if(stop == 0){
-        if(cam){
-            cam->stopLive();
-            stop = 1;
-        }
-        if(ppFrame)
-        {
-//            for (int i = 0; i < width;i++) {
-//                delete[] ppFrame[i];
-//            }
-//            delete[] ppFrame;
-            delete pSectionX;
-            delete pSectionY;
-            delete pAxisX;
-            delete pAxisY;
-            ppFrame = nullptr;
-        }
-        if(ppBackground)
-        {
-//            for (int i = 0; i < width;i++) {
-//                delete[] ppBackground[i];
-//            }
-//            delete[] ppBackground;
-            ppBackground = nullptr;
-
-        }
+    stop = 1;
+    while (frameRun) {
+        Sleep(10);
     }
+    if(cam){
+        cam->stopLive();
+    }
+        delete pSectionX;
+        delete pSectionY;
+        delete pAxisX;
+        delete pAxisY;
+        frame.clear();
+        background.clear();
 }
 
 void Life::initCamera(int c, QString &model, QString &serial)
@@ -197,8 +181,8 @@ void Life::centreMax()
     max = maxX = maxY = 0;
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            if(ppFrame[i][j] > max){
-                max = ppFrame[i][j];
+            if(frame[i][j] > max){
+                max = frame[i][j];
                 maxX = i; maxY = j;
             }
         }
@@ -225,10 +209,10 @@ void Life::centreIntegrall()
         max = maxX = maxY = 0;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                iX[j] += ppFrame[i][j];
-                iY[i] += ppFrame[i][j];
-                if(ppFrame[i][j] > max){
-                    max = ppFrame[i][j];
+                iX[j] += frame[i][j];
+                iY[i] += frame[i][j];
+                if(frame[i][j] > max){
+                    max = frame[i][j];
                     maxX = i; maxY = j;
                 }
             }
@@ -260,7 +244,7 @@ void Life::setBackground()
     qDebug() << "сохранение фона" << nBackground;
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
-            ppBackground[i][j]=0;
+            background[i][j]=0;
         }
     }
     for (int k = 0; k < nBackground; k++)
@@ -270,13 +254,13 @@ void Life::setBackground()
         getFrame();
         for(int i = 0; i < width; i++){
             for (int j = 0; j < height; j++) {
-                ppBackground[i][j]+=ppFrame[i][j];
+                background[i][j]+=frame[i][j];
             }
         }
     }
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
-            ppBackground[i][j] = ppBackground[i][j] / nBackground;
+            background[i][j] = background[i][j] / nBackground;
         }
     }
     emit stateSaveBCGR(100);
@@ -288,7 +272,7 @@ void Life::setBackground()
 void Life::getFrame()
 {
     if (cam){
-        if (cam->getFrame(ppFrame)){
+        if (cam->getFrame(frame)){
             //обработка кадра
             if(sBgnd && !nBackground) subtractBackground();
             lookForCenter(methodCenter);
@@ -313,7 +297,7 @@ void Life::subtractBackground()
 {
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
-            ppFrame[i][j] -= ppBackground[i][j];
+            frame[i][j] -= background[i][j];
         }
     }
 }
@@ -425,10 +409,10 @@ void Life::getSections()
     int x, y;
     getCentre(x,y);
     for (int i = 0; i < width; i++) {
-        (*pSectionX)[i] = ppFrame[i][y];
+        (*pSectionX)[i] = frame[i][y];
     }
     for (int j = 0; j < height; j++) {
-        (*pSectionY)[j] = ppFrame[x][j];
+        (*pSectionY)[j] = frame[x][j];
     }
 }
 
@@ -500,5 +484,10 @@ double Life::pixelTo_mm(int p)
 bool Life::statusCam()
 {
     return cam;
+}
+
+bool Life::statusLife()
+{
+    return !stop;
 }
 

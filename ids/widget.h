@@ -6,6 +6,10 @@
 #include "qcustomplot.h"
 #include <QVector>
 #include <QTimer>
+#include <stdlib.h>
+//#include <iostream.h>
+#include <time.h>
+#include <chrono>
 
 namespace Ui {
 class Widget;

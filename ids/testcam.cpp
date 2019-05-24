@@ -40,7 +40,7 @@ int TestCam::setExp(double &exp)
 {
     expCam = exp;
 
-    exp-=0.2;
+    exp+=0.2;
     return 1;
 }
 
@@ -81,7 +81,7 @@ int TestCam::stopLive()
 }
 
 
-int TestCam::getFrame(float **frame)
+int TestCam::getFrame(Frame &frame)
 {
     srand(time(0));
     auto begin = std::chrono::steady_clock::now();
@@ -99,9 +99,10 @@ int TestCam::getFrame(float **frame)
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             x = i; y = j;
-            z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
-                          pow((y - y0),2) / 2 /pow(sigmaY,2)));
-            frame[i][j] = rand()%100 + 100 + z;
+//            z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
+//                          pow((y - y0),2) / 2 /pow(sigmaY,2)));
+//            frame[i][j] = rand()%100 + 100 + z;
+            frame[i][j] = i + j + 100;
         }
     }
       auto end = std::chrono::steady_clock::now();

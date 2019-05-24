@@ -46,7 +46,7 @@ public:
     int getRangeExp(double &minExp, double &maxExp);
     int startLive();
     int stopLive();
-    int getFrame(float **frame);
+    int getFrame(Frame &frame);
     bool statusCam(); // - 1 - ok
     bool statusLife(); // - 1 - ok
 protected:
@@ -56,8 +56,8 @@ private:    TestCam();
     double minFps=1;
     double maxFps=5;
     double expCam;
-    double maxExp=1;
-    double minExp=200;
+    double minExp=1;
+    double maxExp=200;
 
 };
 

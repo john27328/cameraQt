@@ -27,6 +27,8 @@ CONFIG += c++11
 SOURCES += \
         life.cpp \
         main.cpp \
+        plotframe.cpp \
+        plotsectons.cpp \
         qcustomplot.cpp \
         testcam.cpp \
         widget.cpp
