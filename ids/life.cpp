@@ -92,6 +92,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
 {
     if (c)
     {
+        IdsCam::initCum(&cam);
     }
     else {
         TestCam::initCum(&cam, model, serial);
@@ -165,9 +166,11 @@ void Life::average()
     Sections tmp = {*pSectionX, *pSectionY};
     qDebug() << DBG(tmp.y.size());
     averageQueue.enqueue(tmp);
-    Sections tmp2 = tmp / nAverage;
+    qDebug() << "average 0" << nAverage;
     averageSections+=tmp / nAverage;
+    qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
+<<<<<<< HEAD
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
 }
 
@@ -175,6 +178,11 @@ void Life::setSliceLevel(double sliceLevel)
 {
     if (cam)
         this->sliceLevel = sliceLevel;
+=======
+    qDebug() << "average 2";
+    averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
+    qDebug() << "average end" << averageState;
+>>>>>>> parent of a72803e... опять удалил ids
 }
 
 
