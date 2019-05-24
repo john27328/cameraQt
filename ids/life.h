@@ -28,8 +28,8 @@ public:
     void getCentre(int &x, int &) const;
     void getSections();
     enum class MethodCentre{CentrerMax, CentreIntegrall};
-    Frame frame;
-    Frame background;
+    float** frame;
+    float** background;
     typedef QVector<double> Section;
 
     struct Sections{

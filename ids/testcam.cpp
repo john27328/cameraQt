@@ -81,7 +81,7 @@ int TestCam::stopLive()
 }
 
 
-int TestCam::getFrame(Frame &frame)
+int TestCam::getFrame(float **frame)
 {
     srand(time(0));
     auto begin = std::chrono::steady_clock::now();

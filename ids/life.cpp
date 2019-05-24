@@ -8,6 +8,8 @@ Life::Life()
     nBackground = 0;
     sBgnd = 0;
     methodCenter = MethodCentre::CentreIntegrall;
+    frame = nullptr;
+    background = nullptr;
 }
 
 Life::~Life()
@@ -33,16 +35,16 @@ void Life::startLife()
         pAxisY = new QVector<double>(height);
         createAxis();
 
+        frame = new float*[width];
+        background = new float*[width];
         for(int i = 0; i < width; i++)
         {
-            FrameLine tempFr;
-            FrameLine tempBc;
+            frame[i] = new float[height];
+            background[i] = new float[height];
             for (int j = 0; j < height; j++){
-                tempFr.append(0);
-                tempBc.append(0);
+                frame[i][j] = 0;
+                background[i][j] = 0;
             }
-            frame.append(tempFr);
-            background.append(tempBc);
         }
         stop = 0;
         cam->startLive();
@@ -62,12 +64,28 @@ void Life::stopLife()
     if(cam){
         cam->stopLive();
     }
-        delete pSectionX;
-        delete pSectionY;
-        delete pAxisX;
-        delete pAxisY;
-        frame.clear();
-        background.clear();
+    delete pSectionX;
+    delete pSectionY;
+    delete pAxisX;
+    delete pAxisY;
+    if(frame)
+    {
+        for (int i = 0; i < width;i++) {
+            delete[] frame[i];
+        }
+        delete[] frame;
+        frame = nullptr;
+    }
+    if(background)
+    {
+        for (int i = 0; i < width;i++) {
+            delete[] background[i];
+        }
+        delete[] background;
+        background = nullptr;
+    }
+
+
 }
 
 void Life::initCamera(int c, QString &model, QString &serial)
