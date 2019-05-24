@@ -152,7 +152,7 @@ void Life::startStopAverage(bool start, int n)
     }
     else {
         isAverage = 0;
-        averageQueue.clear();
+//        averageQueue.clear();
         averageState = 100;
     }
     averageSections.x = *pSectionX;
@@ -164,7 +164,7 @@ void Life::startStopAverage(bool start, int n)
 void Life::average()
 {
     Sections tmp = {*pSectionX, *pSectionY};
-    qDebug() << DBG(tmp.y.size());
+//    qDebug() << DBG(tmp.y.size());
     averageQueue.enqueue(tmp);
     qDebug() << "average 0" << nAverage;
     averageSections+=tmp / nAverage;
@@ -272,7 +272,7 @@ void Life::setBackground()
     for (int k = 0; k < nBackground; k++)
     {
         emit stateSaveBCGR(double(k) / nBackground*100);
-        qDebug() << "фон" << k;
+//        qDebug() << "фон" << k;
         getFrame();
         for(int i = 0; i < width; i++){
             for (int j = 0; j < height; j++) {
@@ -372,32 +372,6 @@ int Life::getAverageState() const
     return averageState;
 }
 
-double Life::setFPS(double fps)
-{
-    if (cam){
-        cam->setFPS(fps);
-        return fps;
-    }
-    else{
-        return NAN;
-    }
-}
-
-double Life::setExp(double exp)
-{
-    if(cam){
-        cam->setExp(exp);
-        return exp;
-    }
-    else {
-        return NAN;
-    }
-}
-
-double Life::getFPS()
-{
-
-}
 
 void Life::setSetting(double &minFps, double &maxFps, double &fps, double &minExp, double &maxExp, double &exp)
 {

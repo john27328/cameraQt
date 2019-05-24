@@ -37,13 +37,13 @@ public:
         Section x;
         Section y;
         Sections operator+=(Sections s){
-            qDebug() << "operator+";
+//            qDebug() << "operator+";
             for (int i = 0; i < this->x.size(); i++){
-                qDebug() << DBG(i) <<DBG(this->x[i]) << DBG(s.x[i]) <<DBG(this->y[i]) << DBG(s.y[i]);
+//                qDebug() << DBG(i) <<DBG(this->x[i]) << DBG(s.x[i]) <<DBG(this->y[i]) << DBG(s.y[i]);
                 this->x[i] += s.x[i];
                 this->y[i] += s.y[i];
             }
-            qDebug() << "operator+ end";
+//            qDebug() << "operator+ end";
             return *this;
 
         }
@@ -76,10 +76,6 @@ public:
 
     int getAverageState() const;
 
-    double setFPS(double fps);
-    double setExp(double exp);
-    double getFPS();
-    double getExp();
     void setSetting(double &minFps, double &maxFps, double &fps,
                     double &minExp, double &maxExp, double &exp);
     void getSetting(double &minFps, double &maxFps, double &fps,
