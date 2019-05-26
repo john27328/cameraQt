@@ -348,6 +348,7 @@ void Life::diameter()
             break;
         }
     }
+    diameterMas[4] = level;
 }
 
 void Life::createAxis()
@@ -439,6 +440,20 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
     }
 
 
+}
+
+int Life::getLevel(int &level) const
+{
+    if(diameterMas[0] >= 0 &&
+            diameterMas[1] >= 0 &&
+            diameterMas[2] >= 0 &&
+            diameterMas[3] >= 0){
+        level = diameterMas[4];
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 int Life::getWidth() const

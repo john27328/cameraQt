@@ -72,6 +72,7 @@ public:
     void getMax(int &x, int &y, int &z) const;
     int getBits() const;
     int getDiametr(int &x1, int &x2, int &y1, int &y2) const;
+    int getLevel(int &level) const;
 
     int getAverageState() const;
 
@@ -100,7 +101,7 @@ private:
     void subtractBackground();
     int centre[2];// 0 - x, 1 - y
     int maxP[3]; // 0 - x, 1 - y, P
-    int diameterMas[4]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2
+    int diameterMas[5]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - level
     double sliceLevel;
     void diameter();
     void createAxis();
