@@ -90,7 +90,7 @@ int TestCam::getFrame(float **frame)
     Sleep(100);
     double x;
     double y;
-    double a = 2000;
+    double a = 10 * expCam;
     double x0 = 1000;
     double y0 = 1000;
     double sigmaX = 20;

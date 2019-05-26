@@ -4,6 +4,8 @@
 void Widget::createSections()
 {
     ui->sectionX->addGraph();
+    ui->sectionX->addGraph();
+
     // give the axes some labels:
     ui->sectionX->xAxis->setLabel("x, мм");
     ui->sectionX->yAxis->setLabel("сечение x");
@@ -16,6 +18,7 @@ void Widget::createSections()
     ui->sectionX->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
     ui->sectionX->replot();
 
+    ui->sectionY->addGraph();
     ui->sectionY->addGraph();
     // give the axes some labels:
     ui->sectionY->xAxis->setLabel("y, мм");
@@ -32,11 +35,22 @@ void Widget::createSections()
 
 void Widget::plotSections()
 {
+    int level;
+    life->getLevel(level);
+    //ui->sectionX->clearGraphs();
     ui->sectionX->graph(0)->setData(*life->pAxisX, life->averageSections.x);
+    QVector<double> xx, yx;
+    ui->sectionX->graph(1)->setData(xx,yx);
+    ui->sectionX->graph(1)->addData(0,level);
+    ui->sectionX->graph(1)->addData(life->getWidth_mm(), level);
     ui->sectionX->yAxis->rescale();
     ui->sectionX->replot();
 
     ui->sectionY->graph(0)->setData(*life->pAxisY, life->averageSections.y);
+    QVector<double> xy, yy;
+    ui->sectionY->graph(1)->setData(xy,yy);
+    ui->sectionY->graph(1)->addData(0,level);
+    ui->sectionY->graph(1)->addData(life->getHeight_mm(), level);
     ui->sectionY->yAxis->rescale();
     ui->sectionY->replot();
 }
