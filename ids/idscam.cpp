@@ -230,7 +230,7 @@ int IdsCam::stopLive()
         isLife = 0;
         return 1;
     }
-
+    return 0;
 }
 
 int IdsCam::getFrame(float **frame)
@@ -266,6 +266,7 @@ int IdsCam::getFrame(float **frame)
         }
     return 1;
     }
+    return 0;
 }
 
 bool IdsCam::statusCam()
