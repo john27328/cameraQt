@@ -26,7 +26,7 @@ Life::~Life()
 
 void Life::startLife()
 {
-    if(cam){
+    if(cam && stop == 1){
         width = cam->getWidth();
         height = cam->getHeight();
         pSectionX = new QVector<double>(width);
@@ -65,9 +65,13 @@ void Life::stopLife()
         cam->stopLive();
     }
     delete pSectionX;
+    pSectionX = nullptr;
     delete pSectionY;
+    pSectionY = nullptr;
     delete pAxisX;
+    pAxisX = nullptr;
     delete pAxisY;
+    pAxisY = nullptr;
     if(frame)
     {
         for (int i = 0; i < width;i++) {
