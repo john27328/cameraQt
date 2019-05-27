@@ -1,6 +1,7 @@
 #ifndef IDSCAM_H
 #define IDSCAM_H
 
+#include "ueye.h"
 #include "cam.h"
 class IdsCam: public Cam
 {
