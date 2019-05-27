@@ -17,7 +17,7 @@ Widget::Widget(QWidget *parent) :
     connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->stopLifePB, SIGNAL(clicked()), life, SLOT(stopLife()));
     connect(life, SIGNAL(updateFrame()),this, SLOT(updateFrame()));
-//    connect(life, SIGNAL(updateFrame()),this, SLOT(plotSections()));
+    connect(life, SIGNAL(updateFrame()),this, SLOT(plotSections()));
     connect(ui->resetScalePushButton, SIGNAL(clicked()), this, SLOT(resetScale()));
     connect(ui->resetColorPushButton, SIGNAL(clicked()), this, SLOT(resetColor()));
     connect(ui->BCGNDcheckBox,SIGNAL(stateChanged(int)), this, SLOT(background(int)));

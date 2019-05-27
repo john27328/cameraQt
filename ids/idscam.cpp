@@ -137,6 +137,7 @@ int IdsCam::setExp(double &exp)
 int IdsCam::getFPS(double &fps)
 {
     int nRet = is_GetFramesPerSecond(hCam, &fps);
+    qDebug()<<"getFPS" << nRet << fps;
     if (nRet == IS_SUCCESS) {
         return 1;
     }
@@ -151,6 +152,7 @@ int IdsCam::getExp(double &exp)
                            IS_EXPOSURE_CMD_GET_EXPOSURE,
                            (void *)&exp,
                            sizeof(exp));
+    qDebug()<<"getExp" << nRet << exp<< sizeof(exp);
     if (nRet == IS_SUCCESS) {
         return 1;
     }
@@ -163,6 +165,8 @@ int IdsCam::getRangeFPS(double &minFPS, double &maxFPS)
 {
     double minT, maxT, intervallT;
     int nRet = is_GetFrameTimeRange(hCam, &minT, &maxT, &intervallT);
+    qDebug()<<"getRangeFPS" << nRet << 1 / maxT << 1 / minT;
+
     if (nRet == IS_SUCCESS) {
         minFPS = 1 / maxT;
         maxFPS = 1 / minT;
@@ -175,11 +179,13 @@ int IdsCam::getRangeFPS(double &minFPS, double &maxFPS)
 
 int IdsCam::getRangeExp(double &minExp, double &maxExp)
 {
-    double range[2];
+    double range[3];
     int nRet = is_Exposure(hCam,
                            IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE,
                            (void *)range,
                            sizeof(range));
+    qDebug()<<"getRangeExp" << nRet <<sizeof(range) << range[0] << range[1];
+
     if (nRet == IS_SUCCESS) {
         minExp = range[0];
         maxExp = range[1];

@@ -138,7 +138,7 @@ void Life::setSubtractBackground(bool value)
 
 void Life::startStopAverage(bool start, int n)
 {
-    qDebug()<<"startStopAverage" << start << n;
+    //qDebug()<<"startStopAverage" << start << n;
     if(start){
         averageQueue.clear();
         nAverage = n;
@@ -157,7 +157,7 @@ void Life::startStopAverage(bool start, int n)
     }
     averageSections.x = *pSectionX;
     averageSections.y = *pSectionY;
-    qDebug()<<"startStopAverage end";
+    //qDebug()<<"startStopAverage end";
 }
 
 
@@ -166,9 +166,9 @@ void Life::average()
     Sections tmp = {*pSectionX, *pSectionY};
 //    qDebug() << DBG(tmp.y.size());
     averageQueue.enqueue(tmp);
-    qDebug() << "average 0" << nAverage;
+    //qDebug() << "average 0" << nAverage;
     averageSections+=tmp / nAverage;
-    qDebug() << "average 1";
+    //qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
 }
@@ -178,7 +178,7 @@ void Life::setSliceLevel(double sliceLevel)
     if (cam)
         this->sliceLevel = sliceLevel;
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
-    qDebug() << "average end" << averageState;
+    //qDebug() << "average end" << averageState;
 }
 
 
