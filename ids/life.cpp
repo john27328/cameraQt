@@ -2,7 +2,7 @@
 
 Life::Life()
 {
-    cam = 0;
+    cam = nullptr;
     stop = 1;
     frameRun = 0;
     nBackground = 0;
@@ -207,14 +207,14 @@ void Life::centreMax()
     max = maxX = maxY = 0;
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            if(frame[i][j] > max){
-                max = frame[i][j];
+            if((double)frame[i][j] > max){
+                max = (double)frame[i][j];
                 maxX = i; maxY = j;
             }
         }
     }
     centre[0] = maxX; centre[1] = maxY;
-    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
+    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = (int)(max + 0.5);
 
 }
 
@@ -243,7 +243,7 @@ void Life::centreIntegrall()
                 }
             }
         }
-        maxP[0] = maxX; maxP[1] = maxY; maxP[2] = max;
+        maxP[0] = maxX; maxP[1] = maxY; maxP[2] = (int)(max + 0.5);
 
         max = 0;
         for (int i = 0; i < width; i++) {
@@ -429,6 +429,7 @@ int Life::getBits() const
     if(cam){
         return cam->getBits();
     }
+    return  0;
 }
 
 int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
@@ -474,6 +475,7 @@ int Life::getWidth_mm() const
     if(cam){
         return width * cam->getPSize_mkm() / 1000.;
     }
+    return  0;
 }
 
 int Life::getHeight() const
@@ -486,7 +488,7 @@ int Life::getHeight_mm() const
     if(cam){
         return height * cam->getPSize_mkm() / 1000.;
     }
-
+    return  0;
 }
 
 double Life::pixelTo_mm(int p)
@@ -494,6 +496,8 @@ double Life::pixelTo_mm(int p)
     if(cam){
         return cam->getPSize_mkm()/1000.*p;
     }
+    return  0;
+
 }
 
 bool Life::statusCam()
