@@ -92,7 +92,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
 {
     if (c)
     {
-        IdsCam::initCum(&cam, model, serial);
+        //IdsCam::initCum(&cam, model, serial);
     }
     else {
         TestCam::initCum(&cam, model, serial);
@@ -442,8 +442,6 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
     else {
         return 0;
     }
-
-
 }
 
 int Life::getLevel(int &level) const
