@@ -13,9 +13,11 @@ public:
     virtual ~Cam(){}
     static int initCum(Cam** cam, QString &model, QString &serial)
     {
+        *cam = 0;
         qDebug() << "функция инициализации не определена";
         model = "----";
         serial = "----";
+        return 0;
     }
     virtual int setFPS(double &fps) = 0;
     virtual int setExp(double &exp) = 0;

@@ -84,9 +84,8 @@ void Widget::plotColorMap()
     colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
     colorMap->data()->setRange(QCPRange(-4, 4), QCPRange(-4, 4)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
     // now we assign some data, by accessing the QCPColorMapData instance of the color map:
-    double x, y, z;
     //srand(time(0));
-    auto begin = std::chrono::steady_clock::now();
+    //auto begin = std::chrono::steady_clock::now();
     for(int xIndex=0; xIndex<nx; ++xIndex)
     {
         for(int yIndex=0; yIndex<ny; ++yIndex)
@@ -101,8 +100,8 @@ void Widget::plotColorMap()
     RescaleCustomPlot(ui->colorMap); //делаем квадрат
     //colorMap->rescaleDataRange();
     ui->colorMap->replot();
-    auto end = std::chrono::steady_clock::now();
-    auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+    //auto end = std::chrono::steady_clock::now();
+    //auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
     //qDebug() << "The time: " << elapsed_ms.count() << " ms\n";
     update();
 }
