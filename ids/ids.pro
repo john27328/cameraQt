@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        idscam.cpp \
         life.cpp \
         main.cpp \
         plotframe.cpp \
@@ -36,20 +35,12 @@ SOURCES += \
 
 HEADERS += \
     cam.h \
-    idscam.h \
     life.h \
     qcustomplot.h \
     testcam.h \
         widget.h \
-    C:/Program Files/IDS/uEye/Develop/include/uEye.h \
-    C:/Program Files/IDS/uEye/Develop/include/uEye.h
 
 FORMS += \
         widget.ui
 
-
-unix|win32: LIBS += -L'C:/Program Files/IDS/uEye/Develop/Lib/' -luEye_api
-unix|win32: LIBS += -L'C:/Program Files/IDS/uEye/Develop/Lib/' -luEye_api_64
-INCLUDEPATH += 'C:/Program Files/IDS/uEye/Develop/include'
-DEPENDPATH += 'C:/Program Files/IDS/uEye/Develop/include'
 
