@@ -12,10 +12,9 @@ Widget::Widget(QWidget *parent) :
     createColorMap();
     connect(ui->initPB, SIGNAL(clicked()), this, SLOT(initCamera()));
     connect(ui->startLifePB, SIGNAL(clicked()), life, SLOT(startLife()));
-    connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetScale()));
-    connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(setSliceLevel()));
-    connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(resetColor()));
-    connect(ui->stopLifePB, SIGNAL(clicked()), life, SLOT(stopLife()));
+    connect(life, SIGNAL(lifeStartOk()), this, SLOT(resetScale()));
+    connect(life, SIGNAL(lifeStartOk()), this, SLOT(setSliceLevel()));
+    connect(life, SIGNAL(lifeStartOk()), this, SLOT(resetColor()));
     connect(life, SIGNAL(updateFrame()),this, SLOT(updateFrame()));
     connect(ui->resetScalePushButton, SIGNAL(clicked()), this, SLOT(resetScale()));
     connect(ui->resetColorPushButton, SIGNAL(clicked()), this, SLOT(resetColor()));

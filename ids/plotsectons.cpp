@@ -35,22 +35,27 @@ void Widget::createSections()
 
 void Widget::plotSections()
 {
-    int level;
-    life->getLevel(level);
+    int levelX, levelY;
     //ui->sectionX->clearGraphs();
     ui->sectionX->graph(0)->setData(*life->pAxisX, life->averageSections.x);
     QVector<double> xx, yx;
-    ui->sectionX->graph(1)->setData(xx,yx);
-    ui->sectionX->graph(1)->addData(0,level);
-    ui->sectionX->graph(1)->addData(life->getWidth_mm(), level);
+
     ui->sectionX->yAxis->rescale();
     ui->sectionX->replot();
 
     ui->sectionY->graph(0)->setData(*life->pAxisY, life->averageSections.y);
     QVector<double> xy, yy;
-    ui->sectionY->graph(1)->setData(xy,yy);
-    ui->sectionY->graph(1)->addData(0,level);
-    ui->sectionY->graph(1)->addData(life->getHeight_mm(), level);
+
+    if(life->getLevel(levelX, levelY)){
+        ui->sectionX->graph(1)->setData(xx,yx);
+        ui->sectionX->graph(1)->addData(0,levelX);
+        ui->sectionX->graph(1)->addData(life->getWidth_mm(), levelX);
+        ui->sectionY->graph(1)->setData(xy,yy);
+        ui->sectionY->graph(1)->addData(0,levelY);
+        ui->sectionY->graph(1)->addData(life->getHeight_mm(), levelY);
+    }
+
+
     ui->sectionY->yAxis->rescale();
     ui->sectionY->replot();
 }

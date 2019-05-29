@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item>
-      <layout class="QVBoxLayout" name="init" stretch="0,0,0,0,0">
+      <layout class="QVBoxLayout" name="init" stretch="0,0,0,0">
        <item>
         <widget class="QCheckBox" name="testCheckBox">
          <property name="text">
@@ -48,16 +48,6 @@
          </property>
          <property name="text">
           <string>запустить</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="stopLifePB">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;останавливает захват видео&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>остановить</string>
          </property>
         </widget>
        </item>

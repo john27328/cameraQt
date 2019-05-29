@@ -4,7 +4,6 @@ Life::Life()
 {
     cam = nullptr;
     stop = 1;
-    frameRun = 0;
     nBackground = 0;
     sBgnd = 0;
     methodCenter = MethodCentre::CentreIntegrall;
@@ -16,9 +15,6 @@ Life::~Life()
 {
     stop = 1;
 
-    while (frameRun) {
-        Sleep(10);
-    }
     delete  cam;
     Sleep(100);
     qDebug() << "delete Life";
@@ -26,7 +22,28 @@ Life::~Life()
 
 void Life::startLife()
 {
-    if(cam && stop == 1){
+    if(cam && stop == 1){ 
+        cam->startLive();
+        stop = 0;
+        start();
+        emit lifeStartOk();
+    }
+    else{
+        stop = 1;
+    }
+}
+
+void Life::initCamera(int c, QString &model, QString &serial)
+{
+    if (c)
+    {
+        //IdsCam::initCum(&cam, model, serial);
+    }
+    else {
+        TestCam::initCum(&cam, model, serial);
+    }
+
+    if(cam){
         width = cam->getWidth();
         height = cam->getHeight();
         pSectionX = new QVector<double>(width);
@@ -46,62 +63,34 @@ void Life::startLife()
                 background[i][j] = 0;
             }
         }
-        stop = 0;
-        cam->startLive();
-        start();
-        emit lifeStartOk();
-    }
-}
 
-
-
-void Life::stopLife()
-{
-    stop = 1;
-    while (frameRun) {
-        Sleep(10);
     }
-    if(cam){
-        cam->stopLive();
-    }
-    delete pSectionX;
-    pSectionX = nullptr;
-    delete pSectionY;
-    pSectionY = nullptr;
-    delete pAxisX;
-    pAxisX = nullptr;
-    delete pAxisY;
-    pAxisY = nullptr;
-    if(frame)
-    {
-        for (int i = 0; i < width;i++) {
-            delete[] frame[i];
+    else{
+        delete pSectionX;
+        pSectionX = nullptr;
+        delete pSectionY;
+        pSectionY = nullptr;
+        delete pAxisX;
+        pAxisX = nullptr;
+        delete pAxisY;
+        pAxisY = nullptr;
+        if(frame)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] frame[i];
+            }
+            delete[] frame;
+            frame = nullptr;
         }
-        delete[] frame;
-        frame = nullptr;
-    }
-    if(background)
-    {
-        for (int i = 0; i < width;i++) {
-            delete[] background[i];
+        if(background)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] background[i];
+            }
+            delete[] background;
+            background = nullptr;
         }
-        delete[] background;
-        background = nullptr;
     }
-
-
-}
-
-void Life::initCamera(int c, QString &model, QString &serial)
-{
-    if (c)
-    {
-        //IdsCam::initCum(&cam, model, serial);
-    }
-    else {
-        TestCam::initCum(&cam, model, serial);
-    }
-
 }
 
 void Life::saveBackground(int n)
@@ -112,7 +101,6 @@ void Life::saveBackground(int n)
 
 void Life::run()
 {
-    frameRun = 1;
     qDebug() << "start Life";
     while (!stop)
     {
@@ -127,7 +115,9 @@ void Life::run()
 
 
     }
-    frameRun = 0;
+    if(cam){
+        cam->stopLive();
+    }
     qDebug() << "stop Life";
     exit();
 }
@@ -330,33 +320,48 @@ void Life::subtractBackground()
 
 void Life::diameter()
 {
-    int max = maxP[2];
-    int level = max * sliceLevel / 100.;
+    int maxX = 0;
+    for (int i = 0; i < averageSections.x.size(); i++){
+        if(averageSections.x[i] > maxX){
+            maxX = averageSections.x[i];
+        }
+    }
+    int levelX = maxX * sliceLevel / 100.;
+
     for (int i = 0; i < averageSections.x.size()-1; i++) {
-        if(averageSections.x[i] <= level && averageSections.x[i+1] >= level) {
+        if(averageSections.x[i] <= levelX && averageSections.x[i+1] >= levelX) {
             diameterMas[0] = i;
             break;
         }
     }
     for (int i = averageSections.x.size()-1; i > 0; i--) {
-        if(averageSections.x[i] <= level && averageSections.x[i-1]  >= level) {
+        if(averageSections.x[i] <= levelX && averageSections.x[i-1]  >= levelX) {
             diameterMas[1] = i;
             break;
         }
     }
+
+    int maxY = 0;
+    for (int i = 0; i < averageSections.y.size(); i++){
+        if(averageSections.y[i] > maxY){
+            maxY = averageSections.y[i];
+        }
+    }
+    int levelY = maxY * sliceLevel / 100.;
     for (int i = 0; i < averageSections.y.size()-1; i++) {
-        if(averageSections.y[i] <= level && averageSections.y[i+1] >= level) {
+        if(averageSections.y[i] <= levelY && averageSections.y[i+1] >= levelY) {
             diameterMas[2] = i;
             break;
         }
     }
     for (int i = averageSections.y.size()-1; i > 0; i--) {
-        if(averageSections.y[i] <= level && averageSections.y[i-1]  >= level) {
+        if(averageSections.y[i] <= levelY && averageSections.y[i-1]  >= levelY) {
             diameterMas[3] = i;
             break;
         }
     }
-    diameterMas[4] = level;
+    diameterMas[4] = levelX;
+    diameterMas[5] = levelY;
 }
 
 void Life::createAxis()
@@ -449,18 +454,11 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
     }
 }
 
-int Life::getLevel(int &level) const
+int Life::getLevel(int &levelX, int &levelY) const
 {
-    if(diameterMas[0] >= 0 &&
-            diameterMas[1] >= 0 &&
-            diameterMas[2] >= 0 &&
-            diameterMas[3] >= 0){
-        level = diameterMas[4];
-        return 1;
-    }
-    else {
-        return 0;
-    }
+    levelX = diameterMas[4];
+    levelY = diameterMas[5];
+    return 1;
 }
 
 int Life::getWidth() const

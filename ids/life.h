@@ -28,8 +28,8 @@ public:
     void getCentre(int &x, int &) const;
     void getSections();
     enum class MethodCentre{CentrerMax, CentreIntegrall};
-    float** frame;
-    float** background;
+    float** frame = nullptr;
+    float** background = nullptr;
     typedef QVector<double> Section;
 
     struct Sections{
@@ -63,16 +63,16 @@ public:
         }
     };
 
-    Section *pSectionX;
-    Section *pSectionY;
-    Section *pAxisX;
-    Section *pAxisY;
+    Section *pSectionX = nullptr;
+    Section *pSectionY = nullptr;
+    Section *pAxisX = nullptr;
+    Section *pAxisY = nullptr;
     Sections averageSections;
 
     void getMax(int &x, int &y, int &z) const;
     int getBits() const;
     int getDiametr(int &x1, int &x2, int &y1, int &y2) const;
-    int getLevel(int &level) const;
+    int getLevel(int &levelX, int &levelY) const;
 
     int getAverageState() const;
 
@@ -86,8 +86,7 @@ public:
 private:
     void run();
     bool stop;
-    bool frameRun;
-    Cam *cam;
+    Cam *cam = nullptr;
     int width;
     int height;
     bool sBgnd;
@@ -101,7 +100,7 @@ private:
     void subtractBackground();
     int centre[2];// 0 - x, 1 - y
     int maxP[3]; // 0 - x, 1 - y, P
-    int diameterMas[5]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - level
+    int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
     double sliceLevel;
     void diameter();
     void createAxis();
@@ -114,7 +113,6 @@ private:
 public slots:
     void setSliceLevel(double slicelevel);
     void startLife();
-    void stopLife();
     void saveBackground(int n);
     void setSubtractBackground(bool value);
     void startStopAverage(bool start, int n);

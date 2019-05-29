@@ -14,6 +14,7 @@ TestCam::TestCam()
 
 TestCam::~TestCam()
 {
+    *thisCam = 0;
     qDebug()<<"testCam удален";
 }
 
