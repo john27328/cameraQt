@@ -37,7 +37,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
 {
     if (c)
     {
-        IdsCam::initCum(&cam, model, serial);
+        //IdsCam::initCum(&cam, model, serial);
     }
     else {
         TestCam::initCum(&cam, model, serial);
@@ -488,7 +488,7 @@ int Life::getHeight_mm() const
     if(cam){
         return height * cam->getPSize_mkm() / 1000.;
     }
-    return  0;
+    return  1;
 }
 
 double Life::pixelTo_mm(int p)
@@ -496,7 +496,7 @@ double Life::pixelTo_mm(int p)
     if(cam){
         return cam->getPSize_mkm()/1000.*p;
     }
-    return  0;
+    return  1;
 
 }
 
