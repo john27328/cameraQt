@@ -90,6 +90,10 @@ void Life::initCamera(int c, QString &model, QString &serial)
             delete[] background;
             background = nullptr;
         }
+<<<<<<< HEAD
+=======
+        delete[] background;
+        background = nullptr;
     }
 
 
@@ -100,6 +104,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
     if (c)
     {
         IdsCam::initCum(&cam, model, serial);
+>>>>>>> parent of b08f860... Revert "Revert "удалить ids""
     }
 }
 
