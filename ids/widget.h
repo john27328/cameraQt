@@ -50,6 +50,7 @@ public slots:
     void rescaleSections();
     void initCamera();
     void plotFrame();
+    void startLife();
     void average();
     void setSliceLevel();
     void setSetting();

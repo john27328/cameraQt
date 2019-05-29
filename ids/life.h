@@ -82,6 +82,7 @@ public:
                     double &minExp, double &maxExp, double &exp);
 
     void initCamera(int c, QString &model, QString &serial);
+    void startLife();
 
 private:
     void run();
@@ -112,7 +113,6 @@ private:
 
 public slots:
     void setSliceLevel(double slicelevel);
-    void startLife();
     void saveBackground(int n);
     void setSubtractBackground(bool value);
     void startStopAverage(bool start, int n);

@@ -11,7 +11,7 @@ Widget::Widget(QWidget *parent) :
     life = new Life();
     createColorMap();
     connect(ui->initPB, SIGNAL(clicked()), this, SLOT(initCamera()));
-    connect(ui->startLifePB, SIGNAL(clicked()), life, SLOT(startLife()));
+    connect(ui->startLifePB, SIGNAL(clicked()), this, SLOT(startLife()));
     connect(life, SIGNAL(lifeStartOk()), this, SLOT(resetScale()));
     connect(life, SIGNAL(lifeStartOk()), this, SLOT(setSliceLevel()));
     connect(life, SIGNAL(lifeStartOk()), this, SLOT(resetColor()));
@@ -55,6 +55,11 @@ void Widget::plotFrame()
         plot = 0;
 
     }
+}
+
+void Widget::startLife()
+{
+    life->startLife();
 }
 
 void Widget::average()

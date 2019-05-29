@@ -66,6 +66,8 @@ void Life::initCamera(int c, QString &model, QString &serial)
 
     }
     else{
+        stop = 1;
+        Sleep(100);
         delete pSectionX;
         pSectionX = nullptr;
         delete pSectionY;
