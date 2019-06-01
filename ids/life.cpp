@@ -471,6 +471,8 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
     else {
         return 0;
     }
+
+
 }
 
 int Life::getLevel(int &levelX, int &levelY) const
