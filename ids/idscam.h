@@ -8,7 +8,6 @@ class IdsCam: public Cam
 public:
     static int initCum(Cam** cam, QString &model, QString &serial)
     {
-        qDebug() << DBG(*cam);
         if(!(*cam)){
             qDebug() << "init cam";
             *cam = new IdsCam;

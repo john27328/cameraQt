@@ -25,11 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-<<<<<<< HEAD
         debug.cpp \
-=======
         idscam.cpp \
->>>>>>> parent of acc1143... Revert "вернул камеру"
         life.cpp \
         main.cpp \
         plotframe.cpp \
@@ -40,11 +37,8 @@ SOURCES += \
 
 HEADERS += \
     cam.h \
-<<<<<<< HEAD
     debug.h \
-=======
     idscam.h \
->>>>>>> parent of acc1143... Revert "вернул камеру"
     life.h \
     qcustomplot.h \
     testcam.h \

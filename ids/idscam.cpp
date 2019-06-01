@@ -217,7 +217,6 @@ int IdsCam::startLive()
 
 int IdsCam::stopLive()
 {
-    qDebug() << DBG(isLife);
     if(isLife){
         int nRet = is_StopLiveVideo(hCam,IS_FORCE_VIDEO_STOP);
         if(nRet != IS_SUCCESS) {
