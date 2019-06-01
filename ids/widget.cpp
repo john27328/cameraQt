@@ -43,6 +43,7 @@ void Widget::updateFrame()
 
 void Widget::plotFrame()
 {
+    DBF("void Widget::plotFrame()");
     if(updateFr && !plot && life->statusLife()){
 //        qDebug() << "plotFrame";
         updateFr = 0;
@@ -69,7 +70,7 @@ void Widget::average()
 
 void Widget::setSliceLevel()
 {
-
+    DBF("void Widget::setSliceLevel()");
     if(life->statusCam()){
         double level = ui->level->value();
         life->setSliceLevel(level);
@@ -78,6 +79,7 @@ void Widget::setSliceLevel()
 
 void Widget::setSetting()
 {
+    DBF("void Widget::setSetting()");
     disconnect(ui->expSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     disconnect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     double minFps;
@@ -101,6 +103,7 @@ void Widget::setSetting()
 
 void Widget::getSetting()
 {
+    DBF("void Widget::getSetting()");
     disconnect(ui->expSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     disconnect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     double minFps;
@@ -126,6 +129,7 @@ void Widget::getSetting()
 
 void Widget::getMax()
 {
+    DBF("void Widget::getMax()");
     int x, y, z, bits;
     life->getMax(x,y,z);
     bits = life->getBits();
@@ -135,7 +139,8 @@ void Widget::getMax()
 
 void Widget::diametr()
 {
-    int x1, x2, y1, y2;
+    DBF("void Widget::diametr()");
+    int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     double dx, dy;
     if(life->getDiametr(x1,x2,y1,y2)){
         dx = life->pixelTo_mm(x2 - x1);
@@ -153,6 +158,7 @@ void Widget::diametr()
 
 void Widget::initCamera()
 {
+    DBF("void Widget::initCamera()");
     QString model, serial;
     life->initCamera(!ui->testCheckBox->isChecked(), model, serial);
     ui->model->setText(model);

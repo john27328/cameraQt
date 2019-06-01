@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        debug.cpp \
         life.cpp \
         main.cpp \
         plotframe.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
     cam.h \
+    debug.h \
     life.h \
     qcustomplot.h \
     testcam.h \

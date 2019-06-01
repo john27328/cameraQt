@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <math.h>
 #include <QString>
-#define DBG(x) #x << (x)
 
 class Cam
 {
