@@ -2,9 +2,10 @@
 
 #include <QString>
 
-IdsCam::IdsCam()
+IdsCam::IdsCam(int ID)
 {
     int nRet;
+    hCam = ID;
     isOK = 0;
     nRet = is_InitCamera(&hCam, 0); // подключение камеры hCam = 0 - первая доступная камера
     if (nRet == IS_SUCCESS) {
