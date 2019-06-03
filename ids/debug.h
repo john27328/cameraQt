@@ -20,9 +20,9 @@ public:
     }
     ~Debug()
     {
-        n--;
         QString tmp;
         for (int i = 0; i < n; i++) tmp += "-";
+        n--;
         qDebug()<< tmp << nameD << "end";
     }private:
     static int n;

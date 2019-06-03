@@ -40,7 +40,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
     DBF("void Life::initCamera(int c, QString &model, QString &serial)");
     if (c)
     {
-        //IdsCam::initCum(&cam, model, serial);
+        IdsCam::initCum(&cam, model, serial);
     }
     else {
         TestCam::initCum(&cam, model, serial);
@@ -173,6 +173,8 @@ void Life::average()
     //qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
+    //qDebug() << "averageState" << averageState;
+
 }
 
 void Life::setSliceLevel(double sliceLevel)
@@ -180,7 +182,6 @@ void Life::setSliceLevel(double sliceLevel)
     DBF("void Life::setSliceLevel(double sliceLevel)");
     if (cam)
         this->sliceLevel = sliceLevel;
-    //qDebug() << "average end" << averageState;
 }
 
 
