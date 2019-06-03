@@ -12,13 +12,11 @@ class IdsCam: public Cam
 public:
     static int initCum(Cam** cam, QString &model, QString &serial)
     {
-
+int ID = 0;
         if(!(*cam)){
             qDebug() << "init cam";
-
-            int ID = 0;
             if (ID = getCameraList()){
-                *cam = new IdsCam;
+                *cam = new IdsCam(ID);
                 (*cam)->thisCam = cam;
                 if((*cam)->statusCam()){
                     model = (*cam)->getModel();
@@ -46,6 +44,7 @@ public:
             return 0;
         }
     }
+
     static int getCameraList()
     {
         Debug dbg("static int getCameraList()");
@@ -107,7 +106,7 @@ public:
     bool statusLife(); // - 1 - ok
 
 private:
-    IdsCam();
+    IdsCam(int ID);
     HIDS hCam = 0;      // 0 for the next available camera. 1-254 to access by ID
     SENSORINFO sInfo;
     CAMINFO cInfo;
