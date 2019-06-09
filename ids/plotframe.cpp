@@ -95,8 +95,6 @@ void Widget::plotColorMap()
             colorMap->data()->setCell(xIndex, yIndex, life->frameFinal[xIndex][yIndex]);
         }
     }
-
-
     RescaleCustomPlot(ui->colorMap); //делаем квадрат
     //colorMap->rescaleDataRange();
     ui->colorMap->replot();
