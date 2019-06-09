@@ -79,7 +79,7 @@ int ID = 0;
                     bool ok;
                     QString item = QInputDialog::getItem(0,
                                              QString::fromUtf8("Выберите камеру"),
-                                             QString::fromUtf8("камера:"), items, 1, false, &ok);
+                                             QString::fromUtf8("камера:"), items, 0, false, &ok);
                     if (ok && !item.isEmpty()){
                         ID = map[item];
                     }
