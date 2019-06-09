@@ -134,7 +134,7 @@ void Widget::getMax()
     life->getMax(x,y,z);
     bits = life->getBits();
 //    qDebug() << "max" << z <<  pow(2,bits) << bits;
-    ui->MaxLcdNumber->display(double(z) / pow(2,bits));
+    ui->MaxLcdNumber->display(double(z) / pow(2,bits) * 100);
 }
 
 void Widget::diametr()
