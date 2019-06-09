@@ -125,6 +125,12 @@ void Widget::getSetting()
     connect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
 }
 
+void Widget::CamDisconnect()
+{
+    ui->model->setText("Error");
+    ui->serial->setText("Error");
+}
+
 
 
 void Widget::getMax()

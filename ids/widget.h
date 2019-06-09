@@ -55,6 +55,7 @@ public slots:
     void setSliceLevel();
     void setSetting();
     void getSetting();
+    void CamDisconnect();
 
 };
 

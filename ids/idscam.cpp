@@ -246,19 +246,6 @@ int IdsCam::getFrame(float **frame)
     else if (dwRet == WAIT_OBJECT_0) {
         /* event signaled */
         short *array = (short *)ppcImgMem;
-
-//        //отладка
-//        for (int i = 0; i < width; i+=100){
-//            QString str;
-//            for (int j = 0; j < height; j+=100) {
-//                short tmp = (array[i + j * width]);
-//                str+= QString::number(tmp) + " ";
-//            }
-//            qDebug() << str;
-//        }
-//        qDebug() << "========================";
-
-
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++) {
                 frame[i][j] = array[i + j * width];

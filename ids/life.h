@@ -124,6 +124,7 @@ signals:
     void updateFrame();
     void stateSaveBCGR(int);
     void lifeStartOk();
+    void disconnectCam();
 };
 
 #endif // LIFE_H

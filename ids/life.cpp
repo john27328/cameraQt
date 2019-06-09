@@ -130,6 +130,9 @@ void Life::run()
                 getFrame();
             }
         }
+        else {
+            emit disconnectCam();
+        }
 
 
     }
