@@ -31,6 +31,7 @@ public:
     void getSections();
     enum class MethodCentre{CentrerMax, CentreIntegrall};
     float** frame;
+    float** frameFinal;
     float** background;
     typedef QVector<double> Section;
 
@@ -112,6 +113,7 @@ private:
     int averageState;
     void average();
     bool isAverage;
+    void frameCopy( float**frame1, float **frame2);
 
 public slots:
     void setSliceLevel(double slicelevel);

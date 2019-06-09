@@ -92,7 +92,7 @@ void Widget::plotColorMap()
         {
             //colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
             //double z = rand()%10+100;
-            colorMap->data()->setCell(xIndex, yIndex, life->frame[xIndex][yIndex]);
+            colorMap->data()->setCell(xIndex, yIndex, life->frameFinal[xIndex][yIndex]);
         }
     }
 
