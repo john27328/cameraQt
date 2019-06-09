@@ -1,6 +1,6 @@
 #include "life.h"
 
-Life::Life(): frame(nullptr), background(nullptr), pSectionX(nullptr),
+Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSectionX(nullptr),
     pSectionY(nullptr), pAxisX(nullptr), pAxisY(nullptr), cam(nullptr), isAverage(0)
 {
     cam = nullptr;
@@ -56,13 +56,16 @@ void Life::initCamera(int c, QString &model, QString &serial)
         createAxis();
 
         frame = new float*[width];
+        frameFinal = new float*[width];
         background = new float*[width];
         for(int i = 0; i < width; i++)
         {
             frame[i] = new float[height];
+            frameFinal[i] = new float[height];
             background[i] = new float[height];
             for (int j = 0; j < height; j++){
                 frame[i][j] = 0;
+                frameFinal[i][j] = 0;
                 background[i][j] = 0;
             }
         }
@@ -86,6 +89,14 @@ void Life::initCamera(int c, QString &model, QString &serial)
             }
             delete[] frame;
             frame = nullptr;
+        }
+        if(frameFinal)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] frameFinal[i];
+            }
+            delete[] frameFinal;
+            frameFinal = nullptr;
         }
         if(background)
         {
@@ -175,6 +186,15 @@ void Life::average()
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
     //qDebug() << "averageState" << averageState;
 
+}
+
+void Life::frameCopy(float **frame1, float **frame2)
+{
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            frame2[i][j] = frame1[i][j];
+        }
+    }
 }
 
 void Life::setSliceLevel(double sliceLevel)
@@ -318,6 +338,7 @@ void Life::getFrame()
             diameter();
             //        qDebug() << "центр" << x << y;
             //qDebug() << "frame";
+            frameCopy(frame, frameFinal);
             emit updateFrame();
         }
     }
