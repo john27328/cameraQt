@@ -131,6 +131,19 @@ void Widget::CamDisconnect()
     ui->serial->setText("Error");
 }
 
+void Widget::screenShot()
+{
+    //QString time = QDateTime::currentDateTime().toString("yy.MM.dd-hh.mm.ss.zzz");
+    QString time = QDateTime::currentDateTime().toString("yyMMdd-hhmmsszzz");
+    QString folder = QDir::homePath() +"/camera/";
+    if(!QDir(folder).exists())
+    {
+        qDebug() << QDir().mkdir(folder);
+    }
+    safeScreen(folder + time);
+
+}
+
 
 
 void Widget::getMax()
@@ -160,6 +173,38 @@ void Widget::diametr()
     ui->dy->display(dy);
 }
 
+void Widget::safeScreen(QString name)
+{
+    QString fileName(name + "-screen.png");
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        qDebug() << file.errorString();
+    } else {
+        ui->colorMap->savePng(fileName,0,0,2);
+    }
+
+    QString fileNameX(name + "-sectionX.png");
+    QFile fileX(fileNameX);
+
+    if (!fileX.open(QIODevice::WriteOnly))
+    {
+        qDebug() << fileX.errorString();
+    } else {
+        ui->sectionX->savePng(fileNameX, 1000, 500);
+    }
+
+    QString fileNameY(name + "-sectionY.png");
+    QFile fileY(fileNameY);
+
+    if (!fileY.open(QIODevice::WriteOnly))
+    {
+        qDebug() << fileY.errorString();
+    } else {
+        ui->sectionY->savePng(fileNameY, 1000, 500);
+    }
+}
 
 
 void Widget::initCamera()
