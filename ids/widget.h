@@ -11,6 +11,8 @@
 #include <time.h>
 #include <chrono>
 #include <QDateTime>
+#include <QFile>
+#include <QDataStream>
 
 namespace Ui {
 class Widget;
@@ -36,7 +38,8 @@ private:
     void plotSections();
     void getMax();
     void diametr();
-    void safeScreen(QString name);
+    void saveScreen(QString name);
+    void saveData(QString name);
 
 
 

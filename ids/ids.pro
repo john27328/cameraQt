@@ -31,6 +31,7 @@ SOURCES += \
         plotframe.cpp \
         plotsectons.cpp \
         qcustomplot.cpp \
+        save.cpp \
         testcam.cpp \
         widget.cpp
 
