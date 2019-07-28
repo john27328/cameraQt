@@ -61,6 +61,8 @@ void Widget::plotFrame()
 void Widget::startLife()
 {
     life->startLife();
+    setSetting();
+
 }
 
 void Widget::average()
