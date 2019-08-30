@@ -204,23 +204,6 @@ void Life::setSliceLevel(double sliceLevel)
 }
 
 
-void Life::lookForCenter(MethodCentre method)
-{
-    DBF("void Life::lookForCenter(MethodCentre method)");
-    if(cam){
-        switch (method) {
-        case MethodCentre::CentrerMax:
-            centreMax();
-            break;
-        case MethodCentre::CentreIntegrall:
-            centreIntegrall();
-            break;
-        }
-    }
-}
-
-
-
 void Life::setBackground()
 {
     DBF("void Life::setBackground()");
@@ -258,6 +241,7 @@ void Life::getFrame()
         if (cam->getFrame(frame)){
             //обработка кадра
             if(sBgnd && !nBackground) subtractBackground();
+            centreMax();
             lookForCenter(methodCenter);
             //        int x, y;
             //        getCentre(x,y);
@@ -350,8 +334,8 @@ void Life::getSections()
 
 void Life::getMax(int &x, int &y, int &z) const
 {
-    x = maxPower.xPower;
-    y = maxPower.yPower;
+    x = maxPower.x;
+    y = maxPower.y;
     z = maxPower.power;
 }
 

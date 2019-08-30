@@ -1,5 +1,21 @@
 #include "life.h"
 
+void Life::lookForDiamter(MethodDiameter method)
+{
+    DBF("void Life::lookForCenter(MethodCentre method)");
+    if(cam){
+        switch (method) {
+        case MethodDiameter::DiameterSlice:
+            diameterSlice();
+            break;
+        case MethodDiameter::diameterSecondMoments:
+            diameterSecondMoments();
+            break;
+        }
+    }
+}
+
+
 void Life::diameterSlice()
 {
     DBF("void Life::diameterSlice()");

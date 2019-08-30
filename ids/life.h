@@ -30,7 +30,8 @@ public:
 
     void getCentre(int &x, int &) const;
     void getSections();
-    enum class MethodCentre{CentrerMax, CentreIntegrall};
+    enum class MethodCentre{CentreIntegrall, CentreMoments};
+    enum class MethodDiameter{DiameterSlice, diameterSecondMoments};
     float** frame;
     float** frameFinal;
     float** background;
@@ -104,6 +105,7 @@ private:
     int nBackground;
     void setBackground();
     void lookForCenter(MethodCentre method);
+    void max();
     void centreMax();
     void centreIntegrall();
     void centreMoments();
@@ -120,9 +122,9 @@ private:
 
     struct Max // в попугаях
     {
-        Max(): xPower(0), yPower(0), power(0) {}
-        int xPower;
-        int yPower;
+        Max(): x(0), y(0), power(0) {}
+        int x;
+        int y;
         int power;
     } maxPower;
 
@@ -139,6 +141,7 @@ private:
 
     //int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
     double sliceLevel;
+    void lookForDiamter(MethodDiameter method);
     void diameterSlice();
     void diameterSecondMoments();
     void createAxis();

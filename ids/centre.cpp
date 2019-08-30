@@ -1,5 +1,21 @@
 #include "life.h"
 
+void Life::lookForCenter(MethodCentre method)
+{
+    DBF("void Life::lookForCenter(MethodCentre method)");
+    if(cam){
+        switch (method) {
+        case MethodCentre::CentreMoments:
+            centreMoments();
+            break;
+        case MethodCentre::CentreIntegrall:
+            centreIntegrall();
+            break;
+        }
+    }
+}
+
+
 void Life::centreMax()
 {
     DBF("void Life::centreMax()");
@@ -14,8 +30,7 @@ void Life::centreMax()
             }
         }
     }
-    centre.x = maxX; centre.y = maxY;
-    maxPower.xPower = maxX; maxPower.yPower = maxY; maxPower.power = (int)(max + 0.5);
+    maxPower.x = maxX; maxPower.y = maxY; maxPower.power = (int)(max + 0.5);
 
 }
 
@@ -40,13 +55,8 @@ void Life::centreIntegrall()
             for (int j = 0; j < range.height; j++) {
                 iX[j] += frame[i][j];
                 iY[i] += frame[i][j];
-                if(frame[i][j] > max){
-                    max = frame[i][j];
-                    maxX = i; maxY = j;
-                }
             }
         }
-        maxPower.xPower = maxX; maxPower.yPower = maxY; maxPower.power = (int)(max + 0.5);
 
         max = 0;
         for (int i = 0; i < range.width; i++) {
@@ -86,6 +96,6 @@ void Life::centreMoments()
             b += w;
         }
     }
-    int iMax = ax / b;
-    int jMax = ay / b;
+    centre.x = ax / b;
+    centre.y = ay / b;
 }
