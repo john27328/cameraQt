@@ -1,10 +1,12 @@
 #include "testcam.h"
 #include <time.h>
 #include <chrono>
+#include <debug.h>
 
 
-TestCam::TestCam()
+TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(1),maxExp(200)
 {
+    DBF("TestCam::TestCam()");
     width = height = 2000;
     pSize_mkm = 5.5;
     qDebug()<<"testCam создан";
@@ -14,6 +16,7 @@ TestCam::TestCam()
 
 TestCam::~TestCam()
 {
+    DBF("TestCam::~TestCam()");
     *thisCam = 0;
     qDebug()<<"testCam удален";
 }
@@ -84,6 +87,8 @@ int TestCam::stopLive()
 
 int TestCam::getFrame(float **frame)
 {
+    DBF("int TestCam::getFrame(float **frame)");
+
     srand(time(0));
     auto begin = std::chrono::steady_clock::now();
     static int k = 0;

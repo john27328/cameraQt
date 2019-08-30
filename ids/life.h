@@ -2,10 +2,12 @@
 #define LIFE_H
 #include <QThread>
 #include <math.h>
+#include "idscam.h"
 #include "testcam.h"
 #include "windows.h"
 #include <QVector>
 #include <QQueue>
+#include "debug.h"
 
 
 class Life: public QThread
@@ -28,8 +30,9 @@ public:
     void getCentre(int &x, int &) const;
     void getSections();
     enum class MethodCentre{CentrerMax, CentreIntegrall};
-    float** frame = nullptr;
-    float** background = nullptr;
+    float** frame;
+    float** frameFinal;
+    float** background;
     typedef QVector<double> Section;
 
     struct Sections{
@@ -63,10 +66,10 @@ public:
         }
     };
 
-    Section *pSectionX = nullptr;
-    Section *pSectionY = nullptr;
-    Section *pAxisX = nullptr;
-    Section *pAxisY = nullptr;
+    Section *pSectionX;
+    Section *pSectionY;
+    Section *pAxisX;
+    Section *pAxisY;
     Sections averageSections;
 
     void getMax(int &x, int &y, int &z) const;
@@ -87,7 +90,7 @@ public:
 private:
     void run();
     bool stop;
-    Cam *cam = nullptr;
+    Cam *cam;
     int width;
     int height;
     bool sBgnd;
@@ -109,7 +112,8 @@ private:
     int nAverage;
     int averageState;
     void average();
-    bool isAverage = 0;
+    bool isAverage;
+    void frameCopy( float**frame1, float **frame2);
 
 public slots:
     void setSliceLevel(double slicelevel);
@@ -120,6 +124,7 @@ signals:
     void updateFrame();
     void stateSaveBCGR(int);
     void lifeStartOk();
+    void disconnectCam();
 };
 
 #endif // LIFE_H

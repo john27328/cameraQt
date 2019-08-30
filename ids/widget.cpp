@@ -43,6 +43,7 @@ void Widget::updateFrame()
 
 void Widget::plotFrame()
 {
+    DBF("void Widget::plotFrame()");
     if(updateFr && !plot && life->statusLife()){
 //        qDebug() << "plotFrame";
         updateFr = 0;
@@ -60,6 +61,8 @@ void Widget::plotFrame()
 void Widget::startLife()
 {
     life->startLife();
+    setSetting();
+
 }
 
 void Widget::average()
@@ -69,7 +72,7 @@ void Widget::average()
 
 void Widget::setSliceLevel()
 {
-
+    DBF("void Widget::setSliceLevel()");
     if(life->statusCam()){
         double level = ui->level->value();
         life->setSliceLevel(level);
@@ -78,6 +81,7 @@ void Widget::setSliceLevel()
 
 void Widget::setSetting()
 {
+    DBF("void Widget::setSetting()");
     disconnect(ui->expSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     disconnect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     double minFps;
@@ -101,6 +105,7 @@ void Widget::setSetting()
 
 void Widget::getSetting()
 {
+    DBF("void Widget::getSetting()");
     disconnect(ui->expSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     disconnect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
     double minFps;
@@ -122,20 +127,29 @@ void Widget::getSetting()
     connect(ui->fpsSB,SIGNAL(valueChanged(double)),this,SLOT(setSetting()));
 }
 
+void Widget::CamDisconnect()
+{
+    ui->model->setText("Error");
+    ui->serial->setText("Error");
+}
+
+
 
 
 void Widget::getMax()
 {
+    DBF("void Widget::getMax()");
     int x, y, z, bits;
     life->getMax(x,y,z);
     bits = life->getBits();
 //    qDebug() << "max" << z <<  pow(2,bits) << bits;
-    ui->MaxLcdNumber->display(double(z) / pow(2,bits));
+    ui->MaxLcdNumber->display(double(z) / pow(2,bits) * 100);
 }
 
 void Widget::diametr()
 {
-    int x1, x2, y1, y2;
+    DBF("void Widget::diametr()");
+    int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     double dx, dy;
     if(life->getDiametr(x1,x2,y1,y2)){
         dx = life->pixelTo_mm(x2 - x1);
@@ -151,8 +165,10 @@ void Widget::diametr()
 
 
 
+
 void Widget::initCamera()
 {
+    DBF("void Widget::initCamera()");
     QString model, serial;
     life->initCamera(!ui->testCheckBox->isChecked(), model, serial);
     ui->model->setText(model);

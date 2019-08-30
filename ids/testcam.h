@@ -1,6 +1,7 @@
 #ifndef TESTCAM_H
 #define TESTCAM_H
 #include "cam.h"
+#include "debug.h"
 
 
 class TestCam: public Cam
@@ -9,7 +10,7 @@ public:
     ~TestCam();
     static int initCum(Cam** cam, QString &model, QString &serial)
     {
-        qDebug() << DBG(*cam);
+        qDebug() << DV(*cam);
         if(!(*cam)){
             qDebug() << "init cam";
             *cam = new TestCam;
@@ -53,11 +54,11 @@ protected:
 private:    TestCam();
 
     double fpsCam;
-    double minFps=1;
-    double maxFps=5;
+    double minFps;
+    double maxFps;
     double expCam;
-    double minExp=1;
-    double maxExp=200;
+    double minExp;
+    double maxExp;
 
 };
 

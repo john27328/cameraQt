@@ -4,6 +4,7 @@
 
 void Widget::RescaleCustomPlot(QCustomPlot *qPlot)
 {
+    DBF("void Widget::RescaleCustomPlot(QCustomPlot *qPlot)");
     // определяем ширину и высоту области для отрисовки
         QSize r=qPlot->axisRect()->size();
         // если ширина больше высоты - меняем ось X
@@ -22,6 +23,7 @@ void Widget::RescaleCustomPlot(QCustomPlot *qPlot)
 
 void Widget::createColorMap()
 {
+    DBF("void Widget::createColorMap()");
     // configure axis rect:
     auto customPlot = ui->colorMap;
     customPlot->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom); // this will also allow rescaling the color scale by dragging/zooming
@@ -74,9 +76,7 @@ void Widget::createColorMap()
 
 void Widget::plotColorMap()
 {
-    //qDebug()<<"PlotFrame";
-
-
+    DBF("void Widget::plotColorMap()");
     colorMap->data()->clear();
     int nx = life->getWidth();
     int ny = life->getHeight();
@@ -92,11 +92,9 @@ void Widget::plotColorMap()
         {
             //colorMap->data()->cellToCoord(xIndex, yIndex, &x, &y);
             //double z = rand()%10+100;
-            colorMap->data()->setCell(xIndex, yIndex, life->frame[xIndex][yIndex]);
+            colorMap->data()->setCell(xIndex, yIndex, life->frameFinal[xIndex][yIndex]);
         }
     }
-
-
     RescaleCustomPlot(ui->colorMap); //делаем квадрат
     //colorMap->rescaleDataRange();
     ui->colorMap->replot();
@@ -109,12 +107,14 @@ void Widget::plotColorMap()
 
 void Widget::resetScale()
 {
+    DBF("void Widget::resetScale()");
     ui->colorMap->rescaleAxes();
     ui->colorMap->replot();
 }
 
 void Widget::resetColor()
 {
+    DBF("void Widget::resetColor()");
     double range = pow(2, life->getBits()) * ui->RangeColorSpinBox->value() / 100.;
     colorMap->setDataRange(QCPRange(0,range));
     ui->colorMap->replot();

@@ -2,9 +2,10 @@
 
 #include <QString>
 
-IdsCam::IdsCam()
+IdsCam::IdsCam(int ID)
 {
     int nRet;
+    hCam = ID;
     isOK = 0;
     nRet = is_InitCamera(&hCam, 0); // подключение камеры hCam = 0 - первая доступная камера
     if (nRet == IS_SUCCESS) {
@@ -217,7 +218,6 @@ int IdsCam::startLive()
 
 int IdsCam::stopLive()
 {
-    qDebug() << DBG(isLife);
     if(isLife){
         int nRet = is_StopLiveVideo(hCam,IS_FORCE_VIDEO_STOP);
         if(nRet != IS_SUCCESS) {
@@ -246,19 +246,6 @@ int IdsCam::getFrame(float **frame)
     else if (dwRet == WAIT_OBJECT_0) {
         /* event signaled */
         short *array = (short *)ppcImgMem;
-
-//        //отладка
-//        for (int i = 0; i < width; i+=100){
-//            QString str;
-//            for (int j = 0; j < height; j+=100) {
-//                short tmp = (array[i + j * width]);
-//                str+= QString::number(tmp) + " ";
-//            }
-//            qDebug() << str;
-//        }
-//        qDebug() << "========================";
-
-
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++) {
                 frame[i][j] = array[i + j * width];

@@ -1,5 +1,7 @@
 #include "widget.h"
 #include <QApplication>
+int Debug::n = 0;
+
 
 int main(int argc, char *argv[])
 {

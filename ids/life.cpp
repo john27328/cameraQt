@@ -1,6 +1,7 @@
 #include "life.h"
 
-Life::Life()
+Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSectionX(nullptr),
+    pSectionY(nullptr), pAxisX(nullptr), pAxisY(nullptr), cam(nullptr), isAverage(0)
 {
     cam = nullptr;
     stop = 1;
@@ -22,6 +23,7 @@ Life::~Life()
 
 void Life::startLife()
 {
+    DBF("void Life::startLife()");
     if(cam && stop == 1){
         cam->startLive();
         stop = 0;
@@ -35,9 +37,10 @@ void Life::startLife()
 
 void Life::initCamera(int c, QString &model, QString &serial)
 {
+    DBF("void Life::initCamera(int c, QString &model, QString &serial)");
     if (c)
     {
-        //IdsCam::initCum(&cam, model, serial);
+        IdsCam::initCum(&cam, model, serial);
     }
     else {
         TestCam::initCum(&cam, model, serial);
@@ -53,13 +56,16 @@ void Life::initCamera(int c, QString &model, QString &serial)
         createAxis();
 
         frame = new float*[width];
+        frameFinal = new float*[width];
         background = new float*[width];
         for(int i = 0; i < width; i++)
         {
             frame[i] = new float[height];
+            frameFinal[i] = new float[height];
             background[i] = new float[height];
             for (int j = 0; j < height; j++){
                 frame[i][j] = 0;
+                frameFinal[i][j] = 0;
                 background[i][j] = 0;
             }
         }
@@ -84,6 +90,14 @@ void Life::initCamera(int c, QString &model, QString &serial)
             delete[] frame;
             frame = nullptr;
         }
+        if(frameFinal)
+        {
+            for (int i = 0; i < width;i++) {
+                delete[] frameFinal[i];
+            }
+            delete[] frameFinal;
+            frameFinal = nullptr;
+        }
         if(background)
         {
             for (int i = 0; i < width;i++) {
@@ -105,7 +119,7 @@ void Life::saveBackground(int n)
 
 void Life::run()
 {
-    qDebug() << "start Life";
+    DBF("void Life::run()");
     while (!stop)
     {
         if(cam) {
@@ -115,6 +129,9 @@ void Life::run()
             else {
                 getFrame();
             }
+        }
+        else {
+            emit disconnectCam();
         }
 
 
@@ -136,7 +153,7 @@ void Life::setSubtractBackground(bool value)
 
 void Life::startStopAverage(bool start, int n)
 {
-    //qDebug()<<"startStopAverage" << start << n;
+    DBF("void Life::startStopAverage(bool start, int n)");
     if(start){
         averageQueue.clear();
         nAverage = n;
@@ -161,6 +178,7 @@ void Life::startStopAverage(bool start, int n)
 
 void Life::average()
 {
+    DBF("void Life::average()");
     Sections tmp = {*pSectionX, *pSectionY};
     //    qDebug() << DBG(tmp.y.size());
     averageQueue.enqueue(tmp);
@@ -169,19 +187,30 @@ void Life::average()
     //qDebug() << "average 1";
     averageSections-=averageQueue.dequeue() / nAverage;
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
+    //qDebug() << "averageState" << averageState;
+
+}
+
+void Life::frameCopy(float **frame1, float **frame2)
+{
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            frame2[i][j] = frame1[i][j];
+        }
+    }
 }
 
 void Life::setSliceLevel(double sliceLevel)
 {
+    DBF("void Life::setSliceLevel(double sliceLevel)");
     if (cam)
         this->sliceLevel = sliceLevel;
-    averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
-    //qDebug() << "average end" << averageState;
 }
 
 
 void Life::lookForCenter(MethodCentre method)
 {
+    DBF("void Life::lookForCenter(MethodCentre method)");
     if(cam){
         switch (method) {
         case MethodCentre::CentrerMax:
@@ -196,6 +225,7 @@ void Life::lookForCenter(MethodCentre method)
 
 void Life::centreMax()
 {
+    DBF("void Life::centreMax()");
     double max;
     int maxX, maxY;
     max = maxX = maxY = 0;
@@ -214,6 +244,8 @@ void Life::centreMax()
 
 void Life::centreIntegrall()
 {
+    DBF("void Life::centreIntegrall()");
+
     if(cam){
         double *iX = new double[height];
         double *iY = new double[width];
@@ -261,7 +293,7 @@ void Life::centreIntegrall()
 
 void Life::setBackground()
 {
-    qDebug() << "сохранение фона" << nBackground;
+    DBF("void Life::setBackground()");
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
             background[i][j]=0;
@@ -291,6 +323,7 @@ void Life::setBackground()
 
 void Life::getFrame()
 {
+    DBF("void Life::getFrame()");
     if (cam){
         if (cam->getFrame(frame)){
             //обработка кадра
@@ -308,13 +341,16 @@ void Life::getFrame()
             diameter();
             //        qDebug() << "центр" << x << y;
             //qDebug() << "frame";
+            frameCopy(frame, frameFinal);
             emit updateFrame();
         }
     }
+
 }
 
 void Life::subtractBackground()
 {
+    DBF("void Life::subtractBackground()");
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++) {
             frame[i][j] -= background[i][j];
@@ -324,6 +360,8 @@ void Life::subtractBackground()
 
 void Life::diameter()
 {
+    DBF("void Life::diameter()");
+
     int maxX = 0;
     for (int i = 0; i < averageSections.x.size(); i++){
         if(averageSections.x[i] > maxX){
@@ -370,6 +408,7 @@ void Life::diameter()
 
 void Life::createAxis()
 {
+    DBF("void Life::createAxis()");
     if (cam){
         for (int i = 0; i < width; i++) {
             (*pAxisX)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
@@ -416,6 +455,7 @@ void Life::getCentre(int &x, int &y) const
 
 void Life::getSections()
 {
+    DBF("void Life::getSections()");
     int x, y;
     getCentre(x,y);
     for (int i = 0; i < width; i++) {
@@ -456,6 +496,8 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
     else {
         return 0;
     }
+
+
 }
 
 int Life::getLevel(int &levelX, int &levelY) const
@@ -475,7 +517,7 @@ int Life::getWidth_mm() const
     if(cam){
         return width * cam->getPSize_mkm() / 1000.;
     }
-    return  0;
+    return  1;
 }
 
 int Life::getHeight() const

@@ -3,6 +3,7 @@
 
 void Widget::createSections()
 {
+    DBF("void Widget::createSections()");
     ui->sectionX->addGraph();
     ui->sectionX->addGraph();
 
@@ -35,6 +36,7 @@ void Widget::createSections()
 
 void Widget::plotSections()
 {
+    DBF("void Widget::plotSections()");
     int levelX, levelY;
     //ui->sectionX->clearGraphs();
     ui->sectionX->graph(0)->setData(*life->pAxisX, life->averageSections.x);
@@ -62,6 +64,7 @@ void Widget::plotSections()
 
 void Widget::rescaleSections()
 {
+    DBF("rescaleSections");
     ui->sectionX->xAxis->setRange(0, life->getWidth_mm());
     ui->sectionY->xAxis->setRange(0, life->getWidth_mm());
 }

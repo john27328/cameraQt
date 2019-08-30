@@ -10,6 +10,9 @@
 //#include <iostream.h>
 #include <time.h>
 #include <chrono>
+#include <QDateTime>
+#include <QFile>
+#include <QDataStream>
 
 namespace Ui {
 class Widget;
@@ -35,7 +38,8 @@ private:
     void plotSections();
     void getMax();
     void diametr();
-
+    void saveScreen(QString name);
+    void saveData(QString name);
 
 
 
@@ -55,6 +59,8 @@ public slots:
     void setSliceLevel();
     void setSetting();
     void getSetting();
+    void CamDisconnect();
+    void screenShot();
 
 };
 
