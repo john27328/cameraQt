@@ -110,6 +110,7 @@ private:
     void centreIntegrall();
     void centreMoments();
     MethodCentre methodCenter;
+    MethodDiameter methodDiameter;
     void getFrame();
     void subtractBackground();
 

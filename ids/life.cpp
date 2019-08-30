@@ -8,6 +8,7 @@ Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSection
     nBackground = 0;
     sBgnd = 0;
     methodCenter = MethodCentre::CentreIntegrall;
+    methodDiameter = MethodDiameter::DiameterSlice;
     frame = nullptr;
     background = nullptr;
 }
@@ -252,7 +253,7 @@ void Life::getFrame()
                 averageSections.x = *pSectionX;
                 averageSections.y = *pSectionY;
             }
-            diameterSlice();
+            lookForDiamter(methodDiameter);
             //        qDebug() << "центр" << x << y;
             //qDebug() << "frame";
             frameCopy(frame, frameFinal);
