@@ -67,5 +67,11 @@ void Life::diameterSlice()
 
 void Life::diameterSecondMoments()
 {
-
+    //sigma^2 = int(rho^2 * w(rho, phi), rho, phi) /  int(w(rho, phi), rho, phi)
+    //sigma^2_x = int((x - x0)^2 * w(x,y), x, y) / int(w(x,y), x, y)
+    //sigma^2_y = int((y - y0)^2 * w(x,y), x, y) / int(w(x,y), x, y)
+    //sigma^2_x_y = int((x - x0) * (y - y0) * w(x,y), x, y) / int(w(x,y), x, y)
+    //d = 2 * sqrt(2) * sigma
+    //dx = 4 * sigma_x
+    //dy = 4 * sigma_y
 }
