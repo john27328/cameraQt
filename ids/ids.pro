@@ -25,6 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        centre.cpp \
+        diameter.cpp \
         life.cpp \
         main.cpp \
         plotframe.cpp \

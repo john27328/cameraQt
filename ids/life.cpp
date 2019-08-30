@@ -43,23 +43,23 @@ void Life::initCamera(int c, QString &model, QString &serial)
 
 
     if(cam){
-        width = cam->getWidth();
-        height = cam->getHeight();
-        pSectionX = new QVector<double>(width);
-        pSectionY = new QVector<double>(height);
-        pAxisX = new QVector<double>(width);
-        pAxisY = new QVector<double>(height);
+        range.width = cam->getWidth();
+        range.height = cam->getHeight();
+        pSectionX = new QVector<double>(range.width);
+        pSectionY = new QVector<double>(range.height);
+        pAxisX = new QVector<double>(range.width);
+        pAxisY = new QVector<double>(range.height);
         createAxis();
 
-        frame = new float*[width];
-        frameFinal = new float*[width];
-        background = new float*[width];
-        for(int i = 0; i < width; i++)
+        frame = new float*[range.width];
+        frameFinal = new float*[range.width];
+        background = new float*[range.width];
+        for(int i = 0; i < range.width; i++)
         {
-            frame[i] = new float[height];
-            frameFinal[i] = new float[height];
-            background[i] = new float[height];
-            for (int j = 0; j < height; j++){
+            frame[i] = new float[range.height];
+            frameFinal[i] = new float[range.height];
+            background[i] = new float[range.height];
+            for (int j = 0; j < range.height; j++){
                 frame[i][j] = 0;
                 frameFinal[i][j] = 0;
                 background[i][j] = 0;
@@ -80,7 +80,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
         pAxisY = nullptr;
         if(frame)
         {
-            for (int i = 0; i < width;i++) {
+            for (int i = 0; i < range.width;i++) {
                 delete[] frame[i];
             }
             delete[] frame;
@@ -88,7 +88,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
         }
         if(frameFinal)
         {
-            for (int i = 0; i < width;i++) {
+            for (int i = 0; i < range.width;i++) {
                 delete[] frameFinal[i];
             }
             delete[] frameFinal;
@@ -96,7 +96,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
         }
         if(background)
         {
-            for (int i = 0; i < width;i++) {
+            for (int i = 0; i < range.width;i++) {
                 delete[] background[i];
             }
             delete[] background;
@@ -189,8 +189,8 @@ void Life::average()
 
 void Life::frameCopy(float **frame1, float **frame2)
 {
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
+    for (int i = 0; i < range.width; i++) {
+        for (int j = 0; j < range.height; j++) {
             frame2[i][j] = frame1[i][j];
         }
     }
@@ -219,79 +219,13 @@ void Life::lookForCenter(MethodCentre method)
     }
 }
 
-void Life::centreMax()
-{
-    DBF("void Life::centreMax()");
-    double max;
-    int maxX, maxY;
-    max = maxX = maxY = 0;
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            if((double)frame[i][j] > max){
-                max = (double)frame[i][j];
-                maxX = i; maxY = j;
-            }
-        }
-    }
-    centre[0] = maxX; centre[1] = maxY;
-    maxP[0] = maxX; maxP[1] = maxY; maxP[2] = (int)(max + 0.5);
 
-}
-
-void Life::centreIntegrall()
-{
-    DBF("void Life::centreIntegrall()");
-
-    if(cam){
-        double *iX = new double[height];
-        double *iY = new double[width];
-        for (int i = 0; i < width; i++) {
-            iY[i] = 0;
-        }
-        for (int j = 0; j < height; j++) {
-            iX[j] = 0;
-        }
-
-        double max;
-        int maxX, maxY;
-        max = maxX = maxY = 0;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                iX[j] += frame[i][j];
-                iY[i] += frame[i][j];
-                if(frame[i][j] > max){
-                    max = frame[i][j];
-                    maxX = i; maxY = j;
-                }
-            }
-        }
-        maxP[0] = maxX; maxP[1] = maxY; maxP[2] = (int)(max + 0.5);
-
-        max = 0;
-        for (int i = 0; i < width; i++) {
-            if (iY[i] > max) {
-                max = iY[i];
-                maxX = i;
-            }
-        }
-        max = 0;
-        for (int j = 0; j < height; j++) {
-            if (iX[j] > max) {
-                max = iX[j];
-                maxY = j;
-            }
-        }
-        delete [] iX;
-        delete [] iY;
-        centre[0] = maxX; centre[1] = maxY;
-    }
-}
 
 void Life::setBackground()
 {
     DBF("void Life::setBackground()");
-    for(int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++) {
+    for(int i = 0; i < range.width; i++){
+        for (int j = 0; j < range.height; j++) {
             background[i][j]=0;
         }
     }
@@ -300,14 +234,14 @@ void Life::setBackground()
         emit stateSaveBCGR(double(k) / nBackground*100);
         //        qDebug() << "фон" << k;
         getFrame();
-        for(int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++) {
+        for(int i = 0; i < range.width; i++){
+            for (int j = 0; j < range.height; j++) {
                 background[i][j]+=frame[i][j];
             }
         }
     }
-    for(int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++) {
+    for(int i = 0; i < range.width; i++){
+        for (int j = 0; j < range.height; j++) {
             background[i][j] = background[i][j] / nBackground;
         }
     }
@@ -334,7 +268,7 @@ void Life::getFrame()
                 averageSections.x = *pSectionX;
                 averageSections.y = *pSectionY;
             }
-            diameter();
+            diameterSlice();
             //        qDebug() << "центр" << x << y;
             //qDebug() << "frame";
             frameCopy(frame, frameFinal);
@@ -347,69 +281,21 @@ void Life::getFrame()
 void Life::subtractBackground()
 {
     DBF("void Life::subtractBackground()");
-    for(int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++) {
+    for(int i = 0; i < range.width; i++){
+        for (int j = 0; j < range.height; j++) {
             frame[i][j] -= background[i][j];
         }
     }
-}
-
-void Life::diameter()
-{
-    DBF("void Life::diameter()");
-
-    int maxX = 0;
-    for (int i = 0; i < averageSections.x.size(); i++){
-        if(averageSections.x[i] > maxX){
-            maxX = averageSections.x[i];
-        }
-    }
-    int levelX = maxX * sliceLevel / 100.;
-
-    for (int i = 0; i < averageSections.x.size()-1; i++) {
-        if(averageSections.x[i] <= levelX && averageSections.x[i+1] >= levelX) {
-            diameterMas[0] = i;
-            break;
-        }
-    }
-    for (int i = averageSections.x.size()-1; i > 0; i--) {
-        if(averageSections.x[i] <= levelX && averageSections.x[i-1]  >= levelX) {
-            diameterMas[1] = i;
-            break;
-        }
-    }
-
-    int maxY = 0;
-    for (int i = 0; i < averageSections.y.size(); i++){
-        if(averageSections.y[i] > maxY){
-            maxY = averageSections.y[i];
-        }
-    }
-    int levelY = maxY * sliceLevel / 100.;
-    for (int i = 0; i < averageSections.y.size()-1; i++) {
-        if(averageSections.y[i] <= levelY && averageSections.y[i+1] >= levelY) {
-            diameterMas[2] = i;
-            break;
-        }
-    }
-    for (int i = averageSections.y.size()-1; i > 0; i--) {
-        if(averageSections.y[i] <= levelY && averageSections.y[i-1]  >= levelY) {
-            diameterMas[3] = i;
-            break;
-        }
-    }
-    diameterMas[4] = levelX;
-    diameterMas[5] = levelY;
 }
 
 void Life::createAxis()
 {
     DBF("void Life::createAxis()");
     if (cam){
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < range.width; i++) {
             (*pAxisX)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
         }
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < range.height; i++) {
             (*pAxisY)[i] = (i + 0.5) * cam->getPSize_mkm() / 1000.;
         }
     }
@@ -445,8 +331,8 @@ void Life::getSetting(double &minFps, double &maxFps, double &fps, double &minEx
 
 void Life::getCentre(int &x, int &y) const
 {
-    x = centre[0];
-    y = centre[1];
+    x = centre.x;
+    y = centre.y;
 }
 
 void Life::getSections()
@@ -454,19 +340,19 @@ void Life::getSections()
     DBF("void Life::getSections()");
     int x, y;
     getCentre(x,y);
-    for (int i = 0; i < width; i++) {
+    for (int i = 0; i < range.width; i++) {
         (*pSectionX)[i] = frame[i][y];
     }
-    for (int j = 0; j < height; j++) {
+    for (int j = 0; j < range.height; j++) {
         (*pSectionY)[j] = frame[x][j];
     }
 }
 
 void Life::getMax(int &x, int &y, int &z) const
 {
-    x = maxP[0];
-    y = maxP[1];
-    z = maxP[2];
+    x = maxPower.xPower;
+    y = maxPower.yPower;
+    z = maxPower.power;
 }
 
 int Life::getBits() const
@@ -479,14 +365,14 @@ int Life::getBits() const
 
 int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
 {
-    if(diameterMas[0] >= 0 &&
-            diameterMas[1] >= 0 &&
-            diameterMas[2] >= 0 &&
-            diameterMas[3] >= 0){
-        x1 = diameterMas[0];
-        x2 = diameterMas[1];
-        y1 = diameterMas[2];
-        y2 = diameterMas[3];
+    if(diameter.x1 >= 0 &&
+            diameter.x2 >= 0 &&
+            diameter.y1 >= 0 &&
+            diameter.y2 >= 0){
+        x1 = diameter.x1;
+        x2 = diameter.x2;
+        y1 = diameter.y1;
+        y2 = diameter.y2;
         return 1;
     }
     else {
@@ -498,33 +384,33 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
 
 int Life::getLevel(int &levelX, int &levelY) const
 {
-    levelX = diameterMas[4];
-    levelY = diameterMas[5];
+    levelX = diameter.levelX;
+    levelY = diameter.levelY;
     return 1;
 }
 
 int Life::getWidth() const
 {
-    return width;
+    return range.width;
 }
 
 int Life::getWidth_mm() const
 {
     if(cam){
-        return width * cam->getPSize_mkm() / 1000.;
+        return range.width * cam->getPSize_mkm() / 1000.;
     }
     return  1;
 }
 
 int Life::getHeight() const
 {
-    return height;
+    return range.height;
 }
 
 int Life::getHeight_mm() const
 {
     if(cam){
-        return height * cam->getPSize_mkm() / 1000.;
+        return range.height * cam->getPSize_mkm() / 1000.;
     }
     return  1;
 }

@@ -10,6 +10,7 @@
 #include "debug.h"
 
 
+
 class Life: public QThread
 {
 Q_OBJECT
@@ -91,22 +92,55 @@ private:
     void run();
     bool stop;
     Cam *cam;
-    int width;
-    int height;
+
+    struct Range
+    {
+        Range():width(0), height(0) {}
+        int width;
+        int height;
+    } range;
+
     bool sBgnd;
     int nBackground;
     void setBackground();
     void lookForCenter(MethodCentre method);
     void centreMax();
     void centreIntegrall();
+    void centreMoments();
     MethodCentre methodCenter;
     void getFrame();
     void subtractBackground();
-    int centre[2];// 0 - x, 1 - y
-    int maxP[3]; // 0 - x, 1 - y, P
-    int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
+
+    struct Point // в пикселях
+    {
+        Point(): x(0), y(0) {}
+        int x;
+        int y;
+    } centre;
+
+    struct Max // в попугаях
+    {
+        Max(): xPower(0), yPower(0), power(0) {}
+        int xPower;
+        int yPower;
+        int power;
+    } maxPower;
+
+    struct Diameter
+    {
+        Diameter(): x1(0), x2(0), y1(0), y2(0), levelX(0), levelY(0){}
+        int x1;
+        int x2;
+        int y1;
+        int y2;
+        int levelX;
+        int levelY;
+    } diameter;
+
+    //int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
     double sliceLevel;
-    void diameter();
+    void diameterSlice();
+    void diameterSecondMoments();
     void createAxis();
     QQueue<Sections> averageQueue;
     int nAverage;
@@ -126,5 +160,6 @@ signals:
     void lifeStartOk();
     void disconnectCam();
 };
+
 
 #endif // LIFE_H
