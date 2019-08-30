@@ -84,7 +84,7 @@ int TestCam::stopLive()
     return 1;
 }
 
-
+#include <unistd.h>
 int TestCam::getFrame(float **frame)
 {
     DBF("int TestCam::getFrame(float **frame)");
@@ -93,7 +93,7 @@ int TestCam::getFrame(float **frame)
     auto begin = std::chrono::steady_clock::now();
     static int k = 0;
     k = (k + 10)%2000;
-    Sleep(100);
+    sleep(0.100);
     double x;
     double y;
     double a = 10 * expCam;

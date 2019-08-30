@@ -11,13 +11,13 @@ Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSection
     frame = nullptr;
     background = nullptr;
 }
-
+#include <unistd.h>
 Life::~Life()
 {
     stop = 1;
 
     delete  cam;
-    Sleep(100);
+    sleep(0.100);
     qDebug() << "delete Life";
 }
 
@@ -38,13 +38,9 @@ void Life::startLife()
 void Life::initCamera(int c, QString &model, QString &serial)
 {
     DBF("void Life::initCamera(int c, QString &model, QString &serial)");
-    if (c)
-    {
-        IdsCam::initCum(&cam, model, serial);
-    }
-    else {
+
         TestCam::initCum(&cam, model, serial);
-    }
+
 
     if(cam){
         width = cam->getWidth();
@@ -73,7 +69,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
     }
     else{
         stop = 1;
-        Sleep(100);
+        sleep(0.100);
         delete pSectionX;
         pSectionX = nullptr;
         delete pSectionY;
