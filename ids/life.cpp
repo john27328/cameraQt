@@ -381,6 +381,13 @@ int Life::getDiameter(int &dx, int &dy) const
     return 1;
 }
 
+int Life::getDiameter_mm(double &dx, double &dy) const
+{
+    dx = pixelTo_mm(diameter.width);
+    dy = pixelTo_mm(diameter.height);
+    return 1;
+}
+
 int Life::getWidth() const
 {
     return range.width;
@@ -407,7 +414,7 @@ int Life::getHeight_mm() const
     return  1;
 }
 
-double Life::pixelTo_mm(int p)
+double Life::pixelTo_mm(int p) const
 {
     if(cam){
         return cam->getPSize_mkm()/1000.*p;

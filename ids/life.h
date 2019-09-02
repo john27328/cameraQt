@@ -24,7 +24,7 @@ public:
     int getWidth_mm() const;
     int getHeight() const;
     int getHeight_mm() const;
-    double pixelTo_mm(int p);
+    double pixelTo_mm(int p) const;
     bool statusCam();
     bool statusLife();
 
@@ -79,6 +79,7 @@ public:
     int getEdge(int &x1, int &x2, int &y1, int &y2) const;
     int getLevel(int &levelX, int &levelY) const;
     int getDiameter(int &dx, int &dy) const;
+    int getDiameter_mm(double &dx, double &dy) const;
 
     int getAverageState() const;
 

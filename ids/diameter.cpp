@@ -7,6 +7,8 @@ void Life::lookForDiamter(MethodDiameter method)
         switch (method) {
         case MethodDiameter::DiameterSlice:
             diameterSlice();
+            diameter.width = edge.x2 - edge.x1;
+            diameter.height = edge.y2 - edge.y1;
             break;
         case MethodDiameter::diameterSecondMoments:
             diameterSecondMoments();
