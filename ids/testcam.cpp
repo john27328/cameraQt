@@ -17,7 +17,7 @@ TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(1),maxExp(200)
 TestCam::~TestCam()
 {
     DBF("TestCam::~TestCam()");
-    *thisCam = 0;
+    *thisCam = nullptr;
     qDebug()<<"testCam удален";
 }
 
@@ -85,15 +85,15 @@ int TestCam::stopLive()
 }
 
 #include <unistd.h>
-int TestCam::getFrame(float **frame)
+int TestCam::getFrame(double **frame)
 {
     DBF("int TestCam::getFrame(float **frame)");
 
-    srand(time(0));
+    srand(time(nullptr));
     auto begin = std::chrono::steady_clock::now();
     static int k = 0;
     k = (k + 10)%2000;
-    sleep(0.100);
+    sleep(0);
     double x;
     double y;
     double a = 10 * expCam;

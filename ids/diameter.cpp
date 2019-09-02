@@ -30,13 +30,13 @@ void Life::diameterSlice()
 
     for (int i = 0; i < averageSections.x.size()-1; i++) {
         if(averageSections.x[i] <= levelX && averageSections.x[i+1] >= levelX) {
-            diameter.x1 = i;
+            edge.x1 = i;
             break;
         }
     }
     for (int i = averageSections.x.size()-1; i > 0; i--) {
         if(averageSections.x[i] <= levelX && averageSections.x[i-1]  >= levelX) {
-            diameter.x2 = i;
+            edge.x2 = i;
             break;
         }
     }
@@ -50,18 +50,18 @@ void Life::diameterSlice()
     int levelY = maxY * sliceLevel / 100.;
     for (int i = 0; i < averageSections.y.size()-1; i++) {
         if(averageSections.y[i] <= levelY && averageSections.y[i+1] >= levelY) {
-            diameter.y1 = i;
+            edge.y1 = i;
             break;
         }
     }
     for (int i = averageSections.y.size()-1; i > 0; i--) {
         if(averageSections.y[i] <= levelY && averageSections.y[i-1]  >= levelY) {
-            diameter.y2 = i;
+            edge.y2 = i;
             break;
         }
     }
-    diameter.levelX = levelX;
-    diameter.levelY = levelY;
+    edge.levelX = levelX;
+    edge.levelY = levelY;
 }
 
 
@@ -85,10 +85,10 @@ void Life::diameterSecondMoments()
     int b = 0;
     for (int x = 0; x < range.width; x++) {
         for (int y = 0; y < range.height; y++) {
-            ax += pow(x-centre.x,2) * (double)frame[x][y];
-            ay += pow(y-centre.y,2) * (double)frame[x][y];
-            axy += (x - centre.x) * (y - centre.y) * (double)frame[x][y];
-            b += (double)frame[x][y];
+            ax += pow(x-center.x,2) * frame[x][y];
+            ay += pow(y-center.y,2) * frame[x][y];
+            axy += (x - center.x) * (y - center.y) * frame[x][y];
+            b += frame[x][y];
         }
     }
 

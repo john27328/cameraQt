@@ -7,7 +7,7 @@ Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSection
     stop = 1;
     nBackground = 0;
     sBgnd = 0;
-    methodCenter = MethodCentre::CentreIntegrall;
+    methodCenter = MethodCenter::CentreIntegrall;
     methodDiameter = MethodDiameter::DiameterSlice;
     frame = nullptr;
     background = nullptr;
@@ -52,14 +52,14 @@ void Life::initCamera(int c, QString &model, QString &serial)
         pAxisY = new QVector<double>(range.height);
         createAxis();
 
-        frame = new float*[range.width];
-        frameFinal = new float*[range.width];
-        background = new float*[range.width];
+        frame = new double*[range.width];
+        frameFinal = new double*[range.width];
+        background = new double*[range.width];
         for(int i = 0; i < range.width; i++)
         {
-            frame[i] = new float[range.height];
-            frameFinal[i] = new float[range.height];
-            background[i] = new float[range.height];
+            frame[i] = new double[range.height];
+            frameFinal[i] = new double[range.height];
+            background[i] = new double[range.height];
             for (int j = 0; j < range.height; j++){
                 frame[i][j] = 0;
                 frameFinal[i][j] = 0;
@@ -188,7 +188,7 @@ void Life::average()
 
 }
 
-void Life::frameCopy(float **frame1, float **frame2)
+void Life::frameCopy(double **frame1, double **frame2)
 {
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height; j++) {
@@ -242,7 +242,7 @@ void Life::getFrame()
         if (cam->getFrame(frame)){
             //обработка кадра
             if(sBgnd && !nBackground) subtractBackground();
-            centreMax();
+            centerMax();
             lookForCenter(methodCenter);
             //        int x, y;
             //        getCentre(x,y);
@@ -316,8 +316,8 @@ void Life::getSetting(double &minFps, double &maxFps, double &fps, double &minEx
 
 void Life::getCentre(int &x, int &y) const
 {
-    x = centre.x;
-    y = centre.y;
+    x = center.x;
+    y = center.y;
 }
 
 void Life::getSections()
@@ -348,16 +348,16 @@ int Life::getBits() const
     return  0;
 }
 
-int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
+int Life::getEdge(int &x1, int &x2, int &y1, int &y2) const
 {
-    if(diameter.x1 >= 0 &&
-            diameter.x2 >= 0 &&
-            diameter.y1 >= 0 &&
-            diameter.y2 >= 0){
-        x1 = diameter.x1;
-        x2 = diameter.x2;
-        y1 = diameter.y1;
-        y2 = diameter.y2;
+    if(edge.x1 >= 0 &&
+            edge.x2 >= 0 &&
+            edge.y1 >= 0 &&
+            edge.y2 >= 0){
+        x1 = edge.x1;
+        x2 = edge.x2;
+        y1 = edge.y1;
+        y2 = edge.y2;
         return 1;
     }
     else {
@@ -369,8 +369,15 @@ int Life::getDiametr(int &x1, int &x2, int &y1, int &y2) const
 
 int Life::getLevel(int &levelX, int &levelY) const
 {
-    levelX = diameter.levelX;
-    levelY = diameter.levelY;
+    levelX = edge.levelX;
+    levelY = edge.levelY;
+    return 1;
+}
+
+int Life::getDiameter(int &dx, int &dy) const
+{
+    dx = diameter.width;
+    dy = diameter.height;
     return 1;
 }
 

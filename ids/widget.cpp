@@ -151,7 +151,7 @@ void Widget::diametr()
     DBF("void Widget::diametr()");
     int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
     double dx, dy;
-    if(life->getDiametr(x1,x2,y1,y2)){
+    if(life->getEdge(x1,x2,y1,y2)){
         dx = life->pixelTo_mm(x2 - x1);
         dy = life->pixelTo_mm(y2 - y1);
     }

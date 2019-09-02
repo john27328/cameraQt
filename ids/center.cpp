@@ -1,22 +1,22 @@
 #include "life.h"
 
-void Life::lookForCenter(MethodCentre method)
+void Life::lookForCenter(MethodCenter method)
 {
     DBF("void Life::lookForCenter(MethodCentre method)");
     if(cam){
         switch (method) {
-        case MethodCentre::CentreMoments:
-            centreMoments();
+        case MethodCenter::CentreMoments:
+            centrerMoments();
             break;
-        case MethodCentre::CentreIntegrall:
-            centreIntegrall();
+        case MethodCenter::CentreIntegrall:
+            centerIntegrall();
             break;
         }
     }
 }
 
 
-void Life::centreMax()
+void Life::centerMax()
 {
     DBF("void Life::centreMax()");
     double max;
@@ -24,17 +24,17 @@ void Life::centreMax()
     max = maxX = maxY = 0;
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height; j++) {
-            if((double)frame[i][j] > max){
-                max = (double)frame[i][j];
+            if(frame[i][j] > max){
+                max = frame[i][j];
                 maxX = i; maxY = j;
             }
         }
     }
-    maxPower.x = maxX; maxPower.y = maxY; maxPower.power = (int)(max + 0.5);
+    maxPower.x = maxX; maxPower.y = maxY; maxPower.power = static_cast<int>(max + 0.5);
 
 }
 
-void Life::centreIntegrall()
+void Life::centerIntegrall()
 {
     DBF("void Life::centreIntegrall()");
 
@@ -74,11 +74,11 @@ void Life::centreIntegrall()
         }
         delete [] iX;
         delete [] iY;
-        centre.x = maxX; centre.y = maxY;
+        center.x = maxX; center.y = maxY;
     }
 }
 
-void Life::centreMoments()
+void Life::centrerMoments()
 {
     double levelMomets = 0;
     // x0 = integral(x * w(x,y), x,y) / int(w(x,y),x,y)
@@ -90,12 +90,12 @@ void Life::centreMoments()
     double w = 0;
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height ; j++) {
-            w = (double)frame[i][j] < levelMomets ? 0 : (double)frame[i][j];
+            w = frame[i][j] < levelMomets ? 0 : frame[i][j];
             ax += i * w;
             ay += j * w;
             b += w;
         }
     }
-    centre.x = ax / b;
-    centre.y = ay / b;
+    center.x = ax / b;
+    center.y = ay / b;
 }

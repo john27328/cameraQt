@@ -47,7 +47,7 @@ public:
     int getRangeExp(double &minExp, double &maxExp);
     int startLive();
     int stopLive();
-    int getFrame(float** frame);
+    int getFrame(double** frame);
     bool statusCam(); // - 1 - ok
     bool statusLife(); // - 1 - ok
 protected:

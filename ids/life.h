@@ -1,4 +1,4 @@
-#ifndef LIFE_H
+﻿#ifndef LIFE_H
 #define LIFE_H
 #include <QThread>
 #include <math.h>
@@ -30,11 +30,11 @@ public:
 
     void getCentre(int &x, int &) const;
     void getSections();
-    enum class MethodCentre{CentreIntegrall, CentreMoments};
+    enum class MethodCenter{CentreIntegrall, CentreMoments};
     enum class MethodDiameter{DiameterSlice, diameterSecondMoments};
-    float** frame;
-    float** frameFinal;
-    float** background;
+    double** frame;
+    double** frameFinal;
+    double** background;
     typedef QVector<double> Section;
 
     struct Sections{
@@ -76,8 +76,9 @@ public:
 
     void getMax(int &x, int &y, int &z) const;
     int getBits() const;
-    int getDiametr(int &x1, int &x2, int &y1, int &y2) const;
+    int getEdge(int &x1, int &x2, int &y1, int &y2) const;
     int getLevel(int &levelX, int &levelY) const;
+    int getDiameter(int &dx, int &dy) const;
 
     int getAverageState() const;
 
@@ -99,17 +100,17 @@ private:
         Range():width(0), height(0) {}
         int width;
         int height;
-    } range;
+    } range, diameter;
 
     bool sBgnd;
     int nBackground;
     void setBackground();
-    void lookForCenter(MethodCentre method);
+    void lookForCenter(MethodCenter method);
     void max();
-    void centreMax();
-    void centreIntegrall();
-    void centreMoments();
-    MethodCentre methodCenter;
+    void centerMax();
+    void centerIntegrall();
+    void centrerMoments();
+    MethodCenter methodCenter;
     MethodDiameter methodDiameter;
     void getFrame();
     void subtractBackground();
@@ -119,7 +120,7 @@ private:
         Point(): x(0), y(0) {}
         int x;
         int y;
-    } centre;
+    } center;
 
     struct Max // в попугаях
     {
@@ -129,16 +130,16 @@ private:
         int power;
     } maxPower;
 
-    struct Diameter
+    struct Edge
     {
-        Diameter(): x1(0), x2(0), y1(0), y2(0), levelX(0), levelY(0){}
+        Edge(): x1(0), x2(0), y1(0), y2(0), levelX(0), levelY(0){}
         int x1;
         int x2;
         int y1;
         int y2;
         int levelX;
         int levelY;
-    } diameter;
+    } edge;
 
     //int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
     double sliceLevel;
@@ -151,7 +152,7 @@ private:
     int averageState;
     void average();
     bool isAverage;
-    void frameCopy( float**frame1, float **frame2);
+    void frameCopy(double **frame1, double **frame2);
 
 public slots:
     void setSliceLevel(double slicelevel);
