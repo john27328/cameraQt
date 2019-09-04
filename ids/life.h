@@ -7,7 +7,7 @@
 //#include "windows.h"
 #include <QVector>
 #include <QQueue>
-#include "debug.h"
+#include <QDebug>
 
 
 

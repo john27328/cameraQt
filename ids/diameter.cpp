@@ -81,17 +81,18 @@ void Life::diameterSecondMoments()
     //axy =  int((x - x0) * (y - y0) * w(x,y), x, y)
     //b = int(w(x,y), x, y)
 
-    double ax = 0;
-    long int ay = 0;
-    long int axy = 0;
-    long int b = 0;
+    __int128 ax = 0;
+    __int128 ay = 0;
+    __int128 axy = 0;
+    __int128 b = 0;
     for (int x = 0; x < range.width; x++) {
         for (int y = 0; y < range.height; y++) {
-            ax += pow(x-center.x,2) * frame[x][y];
-            ay += pow(y-center.y,2) * frame[x][y];
+            ax += static_cast<__int128>(pow(x-center.x,2) * frame[x][y]);
+            ay += static_cast<__int128>(pow(y-center.y,2) * frame[x][y]);
             axy += (x - center.x) * (y - center.y) * frame[x][y];
             b += frame[x][y];
         }
+        //qDebug() << ax<<ay<<axy;
     }
 
     //d = ) * sigma
@@ -120,5 +121,6 @@ void Life::diameterSecondMoments()
     }
 
     diameterSigma.phi = phiRad / pi * 180;
+
 
 }
