@@ -81,10 +81,10 @@ void Life::diameterSecondMoments()
     //axy =  int((x - x0) * (y - y0) * w(x,y), x, y)
     //b = int(w(x,y), x, y)
 
-    int ax = 0;
-    int ay = 0;
-    int axy = 0;
-    int b = 0;
+    double ax = 0;
+    long int ay = 0;
+    long int axy = 0;
+    long int b = 0;
     for (int x = 0; x < range.width; x++) {
         for (int y = 0; y < range.height; y++) {
             ax += pow(x-center.x,2) * frame[x][y];
@@ -94,11 +94,31 @@ void Life::diameterSecondMoments()
         }
     }
 
-    //d = 2 * sqrt(2) * sigma
+    //d = ) * sigma
     //dx = 4 * sigma_x
     //dy = 4 * sigma_y
+    double sigma2x = ax / b;
+    double sigma2y = ay / b;
+    double sigma2xy = axy / b;
 
-    int dx = 4 * ax / b;
-    int dy = 4 * ay / b;
+    diameterSigma.dx = 4 * sqrt(sigma2x);
+    diameterSigma.dy = 4 * sqrt(sigma2x);
+
+    double k = pow(sigma2x - sigma2y,2) + 4 * pow(sigma2xy,2);
+    diameterSigma.dSigmaBig = 2 * sqrt(2) * sqrt(sigma2x + sigma2y + sqrt(k));
+    diameterSigma.dSigmaSmall = 2 * sqrt(2) * sqrt(sigma2x + sigma2y - sqrt(k));
+
+    //phi = 1/2 arctan(2 sigma^2_xy / (sigma^2_x - sigma^2_y)
+    //phi = pi / * sgn(sigma^2_xy)
+    static const double pi = acos(-1.);
+    double phiRad = 0;
+    if (sigma2x == sigma2y){
+        phiRad = pi  / 4 * copysign(1, sigma2xy);
+    }
+    else {
+        phiRad = 1 / 2 * atan(2 * sigma2xy / (sigma2x - sigma2y));
+    }
+
+    diameterSigma.phi = phiRad / pi * 180;
 
 }

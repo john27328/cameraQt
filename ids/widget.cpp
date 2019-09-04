@@ -149,10 +149,31 @@ void Widget::getMax()
 void Widget::diametr()
 {
     DBF("void Widget::diametr()");
-    double dx = 0, dy = 0;
-    life->getDiameter_mm(dx,dy);
-    ui->dx->display(dx);
-    ui->dy->display(dy);
+    int method = ui->tabDiameter->currentIndex();
+    life->setMerhodDiameter(method);
+    switch (method) {
+    case 0:{
+        double dx = 0, dy = 0;
+        life->getDiameter_mm(dx,dy);
+        ui->dx->display(dx);
+        ui->dy->display(dy);
+        break;
+    }
+    case 1:{
+        double d = 0, dx = 0, dy = 0, dBig = 0, dSmall = 0, phi = 0;
+        life->getDiameterSigma_mm(d,dx,dy,dBig,dSmall,phi);
+        ui->dx_sigma->display(dx);
+        ui->dy_sigma->display(dy);
+        ui->dBig->display(dBig);
+        ui->dSmall->display(dSmall);
+        ui->phi_sigma->display(phi);
+        break;
+    }
+    default:
+        break;
+    }
+    
+
 }
 
 

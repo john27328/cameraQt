@@ -24,7 +24,7 @@ public:
     int getWidth_mm() const;
     int getHeight() const;
     int getHeight_mm() const;
-    double pixelTo_mm(int p) const;
+    double pixelTo_mm(double p) const;
     bool statusCam();
     bool statusLife();
 
@@ -80,6 +80,8 @@ public:
     int getLevel(int &levelX, int &levelY) const;
     int getDiameter(int &dx, int &dy) const;
     int getDiameter_mm(double &dx, double &dy) const;
+    int getDiameterSigma(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi);
+    int getDiameterSigma_mm(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi);
 
     int getAverageState() const;
 
@@ -90,6 +92,7 @@ public:
 
     void initCamera(int c, QString &model, QString &serial);
     void startLife();
+    int setMerhodDiameter(int i);
 
 private:
     void run();
@@ -142,7 +145,18 @@ private:
         int levelY;
     } edge;
 
-    //int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
+    struct DiameterSigma
+    {
+        DiameterSigma() {}
+        double d = 0;
+        double dx = 0;
+        double dy = 0;
+        double dxy = 0;
+        double dSigmaBig = 0;
+        double dSigmaSmall = 0;
+        double phi = 0;
+    } diameterSigma;
+    
     double sliceLevel;
     void lookForDiamter(MethodDiameter method);
     void diameterSlice();

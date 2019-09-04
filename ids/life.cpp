@@ -36,6 +36,22 @@ void Life::startLife()
     }
 }
 
+int Life::setMerhodDiameter(int i)
+{
+    switch (i) {
+    case 0:
+        methodDiameter = MethodDiameter::DiameterSlice;
+        return 1;
+        break;
+    case 1:
+        methodDiameter = MethodDiameter::diameterSecondMoments;
+        return 1;
+        break;
+    default:
+        break;
+    }
+}
+
 void Life::initCamera(int c, QString &model, QString &serial)
 {
     DBF("void Life::initCamera(int c, QString &model, QString &serial)");
@@ -388,6 +404,28 @@ int Life::getDiameter_mm(double &dx, double &dy) const
     return 1;
 }
 
+int Life::getDiameterSigma(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi)
+{
+    d = diameterSigma.d;
+    dx = diameterSigma.dx;
+    dy = diameterSigma.dy;
+    dBig = diameterSigma.dSigmaBig;
+    dSmall = diameterSigma.dSigmaSmall;
+    phi = diameterSigma.phi;
+    return 1;
+}
+
+int Life::getDiameterSigma_mm(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi)
+{
+    d = pixelTo_mm(diameterSigma.d);
+    dx = pixelTo_mm(diameterSigma.dx);
+    dy = pixelTo_mm(diameterSigma.dy);
+    dBig = pixelTo_mm(diameterSigma.dSigmaBig);
+    dSmall = pixelTo_mm(diameterSigma.dSigmaSmall);
+    phi = pixelTo_mm(diameterSigma.phi);
+    return 1;
+}
+
 int Life::getWidth() const
 {
     return range.width;
@@ -414,7 +452,7 @@ int Life::getHeight_mm() const
     return  1;
 }
 
-double Life::pixelTo_mm(int p) const
+double Life::pixelTo_mm(double p) const
 {
     if(cam){
         return cam->getPSize_mkm()/1000.*p;
