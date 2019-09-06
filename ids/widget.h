@@ -61,6 +61,7 @@ public slots:
     void getSetting();
     void CamDisconnect();
     void screenShot();
+    void setCutLevel();
 
 };
 

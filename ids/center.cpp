@@ -80,22 +80,28 @@ void Life::centerIntegrall()
 
 void Life::centrerMoments()
 {
-    double levelMomets = 0;
+    int cut = pow(2, getBits()) * cutLevel / 100.;
     // x0 = integral(x * w(x,y), x,y) / int(w(x,y),x,y)
     // a = integral(x * w(x,y), x,y)
     // b = integral(w(x,y),x,y)
-    double ax = 0;
-    double b = 0;
-    double ay = 0;
-    double w = 0;
+    __int128 ax = 0;
+    __int128 b = 0;
+    __int128 ay = 0;
+    __int128 w = 0;
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height ; j++) {
-            w = frame[i][j] < levelMomets ? 0 : frame[i][j];
+            w = frame[i][j] < cut ? 0 : frame[i][j];
             ax += i * w;
             ay += j * w;
             b += w;
         }
     }
-    center.x = ax / b;
-    center.y = ay / b;
+    if(b!=0){
+        center.x = ax / b;
+        center.y = ay / b;
+    }
+    else{
+        center.x = -1;
+        center.y = -1;
+    }
 }

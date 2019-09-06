@@ -94,6 +94,10 @@ public:
     void startLife();
     int setMerhodDiameter(int i);
 
+    int getCutLevel() const;
+
+    void setCutLevel(int value);
+
 private:
     void run();
     bool stop;
@@ -168,6 +172,7 @@ private:
     void average();
     bool isAverage;
     void frameCopy(double **frame1, double **frame2);
+    int cutLevel;
 
 public slots:
     void setSliceLevel(double slicelevel);

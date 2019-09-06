@@ -15,6 +15,7 @@ void Widget::screenShot()
 
 }
 
+
 void Widget::saveScreen(QString name)
 {
     QString fileName(name + "screen.png");

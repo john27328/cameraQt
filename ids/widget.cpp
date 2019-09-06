@@ -28,6 +28,7 @@ Widget::Widget(QWidget *parent) :
     plotFrame();
     connect(timer1ms,SIGNAL(timeout()),this, SLOT(plotFrame()));
     connect(ui->level,SIGNAL(valueChanged(double)),this,SLOT(setSliceLevel()));
+    connect(ui->cutLevel,SIGNAL(valueChanged(double)), this, SLOT(setCutLevel()));
 }
 
 Widget::~Widget()
@@ -144,6 +145,11 @@ void Widget::getMax()
     bits = life->getBits();
 //    qDebug() << "max" << z <<  pow(2,bits) << bits;
     ui->MaxLcdNumber->display(double(z) / pow(2,bits) * 100);
+}
+
+void Widget::setCutLevel()
+{
+    life->setCutLevel(ui->cutLevel->value());
 }
 
 void Widget::diametr()

@@ -107,8 +107,8 @@ int TestCam::getFrame(double **frame)
             x = i; y = j;
             z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
                           pow((y - y0),2) / 2 /pow(sigmaY,2)));
-            //frame[i][j] = rand()%100 + 100 + z;
-            frame[i][j] = 0 + z;
+            frame[i][j] = rand()%100 + 100 + z;
+//            frame[i][j] = 0 + z;
 
 //            frame[i][j] = i + j + 100;
         }

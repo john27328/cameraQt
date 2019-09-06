@@ -213,6 +213,16 @@ void Life::frameCopy(double **frame1, double **frame2)
     }
 }
 
+void Life::setCutLevel(int value)
+{
+    cutLevel = value;
+}
+
+int Life::getCutLevel() const
+{
+    return cutLevel;
+}
+
 void Life::setSliceLevel(double sliceLevel)
 {
     DBF("void Life::setSliceLevel(double sliceLevel)");
