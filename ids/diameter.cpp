@@ -109,8 +109,8 @@ void Life::diameterSecondMoments()
             if (frame[x][y] > cut) {
                 ax += static_cast<__int128>(pow(x-center.x,2) * frame[x][y]);
                 ay += static_cast<__int128>(pow(y-center.y,2) * frame[x][y]);
-                axy += (x - center.x) * (y - center.y) * frame[x][y];
-                b += frame[x][y];
+                axy += static_cast<__int128>((x - center.x) * (y - center.y) * frame[x][y]);
+                b += static_cast<__int128>(frame[x][y]);
             }
 
         }

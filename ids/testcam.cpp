@@ -4,7 +4,7 @@
 #include <debug.h>
 
 
-TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(1),maxExp(200)
+TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(0),maxExp(200)
 {
     DBF("TestCam::TestCam()");
     width = height = 2000;
@@ -36,7 +36,6 @@ QString TestCam::getSerial()
 int TestCam::setFPS(double &fps)
 {
     fpsCam = fps;
-    fps+=0.1;
     return 1;
 }
 
@@ -44,7 +43,6 @@ int TestCam::setExp(double &exp)
 {
     expCam = exp;
 
-    exp+=0.2;
     return 1;
 }
 

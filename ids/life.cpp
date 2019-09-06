@@ -71,11 +71,13 @@ void Life::initCamera(int c, QString &model, QString &serial)
         frame = new double*[range.width];
         frameFinal = new double*[range.width];
         background = new double*[range.width];
+        averageFrame = new double*[range.width];
         for(int i = 0; i < range.width; i++)
         {
             frame[i] = new double[range.height];
             frameFinal[i] = new double[range.height];
             background[i] = new double[range.height];
+            averageFrame[i] = new double[range.height];
             for (int j = 0; j < range.height; j++){
                 frame[i][j] = 0;
                 frameFinal[i][j] = 0;
@@ -119,7 +121,14 @@ void Life::initCamera(int c, QString &model, QString &serial)
             delete[] background;
             background = nullptr;
         }
-
+        if(averageFrame)
+        {
+            for (int i = 0; i < range.width;i++) {
+                delete[] averageFrame[i];
+            }
+            delete[] averageFrame;
+            averageFrame = nullptr;
+        }
     }
 }
 
@@ -201,6 +210,21 @@ void Life::average()
     averageSections-=averageQueue.dequeue() / nAverage;
     averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
     //qDebug() << "averageState" << averageState;
+
+}
+
+void Life::averageFrameFunction()
+{
+
+}
+
+double **Life::summFrame(double **frame1, double **frame2)
+{
+
+}
+
+void Life::minusFrame(double **frame1, double **frame2)
+{
 
 }
 
