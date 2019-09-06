@@ -170,6 +170,11 @@ private:
     int nAverage;
     int averageState;
     void average();
+    void averageFrameFunction();
+    double ** summFrame(double **frame1, double **frame2);
+    void minusFrame(double **frame1, double **frame2);
+    double ** averageFrame;
+    QQueue<double **> frameQueue;
     bool isAverage;
     void frameCopy(double **frame1, double **frame2);
     int cutLevel;
