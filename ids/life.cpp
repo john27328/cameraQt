@@ -216,28 +216,52 @@ void Life::average()
 
 void Life::averageFrameFunction()
 {
+    auto tmpFrame = newFrame();
+    multFrame(frame, 1 / nAverage, tmpFrame);
+    frameQueue.enqueue(tmpFrame);
+    summFrame(averageFrame, tmpFrame, averageFrame);
 
+    tmpFrame = frameQueue.dequeue();
+    if(tmpFrame){
+        minusFrame(averageFrame, tmpFrame, averageFrame);
+        deleteFrame(tmpFrame);
+    }
 }
 
-void Life::summFrame(const double **frame1, const double **frame2, double **frameOut)
+void Life::summFrame(double **frame1, double **frame2, double **frameOut)
 {
     for (int i = 0; i < range.width; i++)
         for(int j = 0; j < range.height; j++)
             frameOut[i][j] = frame1[i][j] + frame2[i][j];
 }
 
-void Life::minusFrame(const double **frame1, const double **frame2, double **frameOut)
+void Life::minusFrame(double **frame1, double **frame2, double **frameOut)
 {
     for (int i = 0; i < range.width; i++)
         for(int j = 0; j < range.height; j++)
             frameOut[i][j] = frame1[i][j] - frame2[i][j];
 }
 
-void Life::multFrame(const double **frame, double d, double **frameOut)
+void Life::multFrame(double ** frame, double d, double **frameOut)
 {
     for (int i = 0; i < range.width; i++)
         for(int j = 0; j < range.height; j++)
             frameOut[i][j] = frame[i][j] * d;
+}
+
+double **Life::newFrame()
+{
+    double ** tmp = new double *[range.width];
+    for(int i = 0; i < range.width; i++)
+        tmp[i] = new double[range.height];
+    return tmp;
+}
+
+void Life::deleteFrame(double **frame)
+{
+    for(int i = 0; i < range.width; i++)
+        delete[] frame[i];
+    delete[] frame;
 }
 
 void Life::frameCopy(double **frame1, double **frameOut)
