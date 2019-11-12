@@ -230,7 +230,16 @@ void Life::averageFrameFunction()
 
 void Life::average(Life::MethodDiameter method)
 {
-
+    if(cam){
+        switch (method) {
+        case MethodDiameter::DiameterSlice:
+            averageSec();
+            break;
+        case MethodDiameter::diameterSecondMoments:
+        averageFrameFunction();
+        break;
+        }
+    }
 }
 
 void Life::summFrame(double **frame1, double **frame2, double **frameOut)
@@ -339,7 +348,7 @@ void Life::getFrame()
             //        getCentre(x,y);
             getSections();
             if(isAverage)
-                averageSec();
+                average(methodDiameter);
             else {
                 averageSections.x = *pSectionX;
                 averageSections.y = *pSectionY;
