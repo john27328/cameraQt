@@ -169,8 +169,9 @@ private:
     QQueue<Sections> averageQueue;
     int nAverage;
     int averageState;
-    void average();
+    void averageSec();
     void averageFrameFunction();
+    void average(MethodDiameter method);
     void summFrame(const double **frame1, const double **frame2, double **frameOut);
     void minusFrame(const double **frame1, const double **frame2, double **frameOut);
     void multFrame(const double **frame, double d, double **frameOut);
@@ -180,6 +181,11 @@ private:
     void frameCopy(double **frame1, double **frameOut);
     int cutLevel;
 
+    void summFrame(double **frame1, double **frame2, double **frameOut);
+    void minusFrame(double **frame1, double **frame2, double **frameOut);
+    void multFrame(double **frame, double d, double **frameOut);
+    double **newFrame();
+    void deleteFrame(double **frame);
 public slots:
     void setSliceLevel(double slicelevel);
     void saveBackground(int n);

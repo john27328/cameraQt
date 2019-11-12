@@ -199,7 +199,7 @@ void Life::startStopAverage(bool start, int n)
 }
 
 
-void Life::average()
+void Life::averageSec()
 {
     DBF("void Life::average()");
     Sections tmp = {*pSectionX, *pSectionY};
@@ -226,6 +226,11 @@ void Life::averageFrameFunction()
         minusFrame(averageFrame, tmpFrame, averageFrame);
         deleteFrame(tmpFrame);
     }
+}
+
+void Life::average(Life::MethodDiameter method)
+{
+
 }
 
 void Life::summFrame(double **frame1, double **frame2, double **frameOut)
@@ -334,7 +339,7 @@ void Life::getFrame()
             //        getCentre(x,y);
             getSections();
             if(isAverage)
-                average();
+                averageSec();
             else {
                 averageSections.x = *pSectionX;
                 averageSections.y = *pSectionY;
