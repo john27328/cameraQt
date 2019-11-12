@@ -1,4 +1,5 @@
 #include "life.h"
+#include <unistd.h>
 
 Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSectionX(nullptr),
     pSectionY(nullptr), pAxisX(nullptr), pAxisY(nullptr), cam(nullptr), isAverage(0)
@@ -12,7 +13,7 @@ Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSection
     frame = nullptr;
     background = nullptr;
 }
-#include <unistd.h>
+
 Life::~Life()
 {
     stop = 1;
@@ -218,21 +219,32 @@ void Life::averageFrameFunction()
 
 }
 
-double **Life::summFrame(double **frame1, double **frame2)
+void Life::summFrame(const double **frame1, const double **frame2, double **frameOut)
 {
-
+    for (int i = 0; i < range.width; i++)
+        for(int j = 0; j < range.height; j++)
+            frameOut[i][j] = frame1[i][j] + frame2[i][j];
 }
 
-void Life::minusFrame(double **frame1, double **frame2)
+void Life::minusFrame(const double **frame1, const double **frame2, double **frameOut)
 {
-
+    for (int i = 0; i < range.width; i++)
+        for(int j = 0; j < range.height; j++)
+            frameOut[i][j] = frame1[i][j] - frame2[i][j];
 }
 
-void Life::frameCopy(double **frame1, double **frame2)
+void Life::multFrame(const double **frame, double d, double **frameOut)
+{
+    for (int i = 0; i < range.width; i++)
+        for(int j = 0; j < range.height; j++)
+            frameOut[i][j] = frame[i][j] * d;
+}
+
+void Life::frameCopy(double **frame1, double **frameOut)
 {
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height; j++) {
-            frame2[i][j] = frame1[i][j];
+            frameOut[i][j] = frame1[i][j];
         }
     }
 }

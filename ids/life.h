@@ -160,7 +160,7 @@ private:
         double dSigmaSmall = 0;
         double phi = 0;
     } diameterSigma;
-    
+
     double sliceLevel;
     void lookForDiamter(MethodDiameter method);
     void diameterSlice();
@@ -171,12 +171,13 @@ private:
     int averageState;
     void average();
     void averageFrameFunction();
-    double ** summFrame(double **frame1, double **frame2);
-    void minusFrame(double **frame1, double **frame2);
+    void summFrame(const double **frame1, const double **frame2, double **frameOut);
+    void minusFrame(const double **frame1, const double **frame2, double **frameOut);
+    void multFrame(const double **frame, double d, double **frameOut);
     double ** averageFrame;
     QQueue<double **> frameQueue;
     bool isAverage;
-    void frameCopy(double **frame1, double **frame2);
+    void frameCopy(double **frame1, double **frameOut);
     int cutLevel;
 
 public slots:
