@@ -4,7 +4,7 @@
 #include <debug.h>
 
 
-TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(1),maxExp(200)
+TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(0),maxExp(200)
 {
     DBF("TestCam::TestCam()");
     width = height = 2000;
@@ -17,7 +17,7 @@ TestCam::TestCam(): minFps(1),  maxFps(5),  minExp(1),maxExp(200)
 TestCam::~TestCam()
 {
     DBF("TestCam::~TestCam()");
-    *thisCam = 0;
+    *thisCam = nullptr;
     qDebug()<<"testCam удален";
 }
 
@@ -36,7 +36,6 @@ QString TestCam::getSerial()
 int TestCam::setFPS(double &fps)
 {
     fpsCam = fps;
-    fps+=0.1;
     return 1;
 }
 
@@ -44,7 +43,6 @@ int TestCam::setExp(double &exp)
 {
     expCam = exp;
 
-    exp+=0.2;
     return 1;
 }
 
@@ -84,16 +82,16 @@ int TestCam::stopLive()
     return 1;
 }
 
-
-int TestCam::getFrame(float **frame)
+#include <unistd.h>
+int TestCam::getFrame(double **frame)
 {
     DBF("int TestCam::getFrame(float **frame)");
 
-    srand(time(0));
+    srand(time(nullptr));
     auto begin = std::chrono::steady_clock::now();
     static int k = 0;
     k = (k + 10)%2000;
-    Sleep(100);
+    sleep(0);
     double x;
     double y;
     double a = 10 * expCam;
@@ -108,6 +106,8 @@ int TestCam::getFrame(float **frame)
             z = a * exp(-(pow((x - x0),2) / 2 / pow(sigmaX,2) +
                           pow((y - y0),2) / 2 /pow(sigmaY,2)));
             frame[i][j] = rand()%100 + 100 + z;
+//            frame[i][j] = 0 + z;
+
 //            frame[i][j] = i + j + 100;
         }
     }

@@ -146,21 +146,35 @@ void Widget::getMax()
     ui->MaxLcdNumber->display(double(z) / pow(2,bits) * 100);
 }
 
+
 void Widget::diametr()
 {
     DBF("void Widget::diametr()");
-    int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-    double dx, dy;
-    if(life->getDiametr(x1,x2,y1,y2)){
-        dx = life->pixelTo_mm(x2 - x1);
-        dy = life->pixelTo_mm(y2 - y1);
+    int method = ui->tabDiameter->currentIndex();
+    life->setMerhodDiameter(method);
+    switch (method) {
+    case 0:{
+        double dx = 0, dy = 0;
+        life->getDiameter_mm(dx,dy);
+        ui->dx->display(dx);
+        ui->dy->display(dy);
+        break;
     }
-    else{
-        dx = NAN;
-        dy = NAN;
+    case 1:{
+        double d = 0, dx = 0, dy = 0, dBig = 0, dSmall = 0, phi = 0;
+        life->getDiameterSigma_mm(d,dx,dy,dBig,dSmall,phi);
+        ui->dx_sigma->display(dx);
+        ui->dy_sigma->display(dy);
+        ui->dBig->display(dBig);
+        ui->dSmall->display(dSmall);
+        ui->phi_sigma->display(phi);
+        break;
     }
-    ui->dx->display(dx);
-    ui->dy->display(dy);
+    default:
+        break;
+    }
+
+
 }
 
 

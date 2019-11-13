@@ -1,7 +1,7 @@
 #ifndef CAM_H
 #define CAM_H
 #include <QDebug>
-#include <windows.h>
+//#include <windows.h>
 #include <math.h>
 #include <QString>
 
@@ -26,7 +26,7 @@ public:
     virtual int getRangeExp(double &minExp, double &maxExp) = 0;
     virtual int startLive() = 0;
     virtual int stopLive() = 0;
-    virtual int getFrame(float** frame) = 0;
+    virtual int getFrame(double** frame) = 0;
     virtual bool statusCam() = 0; // - 1 - ok
     virtual bool statusLife() = 0; // - 1 - ok
     virtual QString getSerial() = 0;

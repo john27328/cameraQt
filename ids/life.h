@@ -1,13 +1,14 @@
-#ifndef LIFE_H
+﻿#ifndef LIFE_H
 #define LIFE_H
 #include <QThread>
 #include <math.h>
-#include "idscam.h"
+//#include "idscam.h"
 #include "testcam.h"
-#include "windows.h"
+//#include "windows.h"
 #include <QVector>
 #include <QQueue>
-#include "debug.h"
+#include <QDebug>
+
 
 
 class Life: public QThread
@@ -23,16 +24,17 @@ public:
     int getWidth_mm() const;
     int getHeight() const;
     int getHeight_mm() const;
-    double pixelTo_mm(int p);
+    double pixelTo_mm(double p) const;
     bool statusCam();
     bool statusLife();
 
     void getCentre(int &x, int &) const;
     void getSections();
-    enum class MethodCentre{CentrerMax, CentreIntegrall};
-    float** frame;
-    float** frameFinal;
-    float** background;
+    enum class MethodCenter{CentreIntegrall, CentreMoments};
+    enum class MethodDiameter{DiameterSlice, diameterSecondMoments};
+    double** frame;
+    double** frameFinal;
+    double** background;
     typedef QVector<double> Section;
 
     struct Sections{
@@ -74,8 +76,12 @@ public:
 
     void getMax(int &x, int &y, int &z) const;
     int getBits() const;
-    int getDiametr(int &x1, int &x2, int &y1, int &y2) const;
+    int getEdge(int &x1, int &x2, int &y1, int &y2) const;
     int getLevel(int &levelX, int &levelY) const;
+    int getDiameter(int &dx, int &dy) const;
+    int getDiameter_mm(double &dx, double &dy) const;
+    int getDiameterSigma(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi);
+    int getDiameterSigma_mm(double &d, double &dx, double &dy, double &dBig, double &dSmall, double phi);
 
     int getAverageState() const;
 
@@ -86,35 +92,101 @@ public:
 
     void initCamera(int c, QString &model, QString &serial);
     void startLife();
+    int setMerhodDiameter(int i);
+
+    int getCutLevel() const;
+
+    void setCutLevel(int value);
 
 private:
     void run();
     bool stop;
     Cam *cam;
-    int width;
-    int height;
+
+    struct Range
+    {
+        Range():width(0), height(0) {}
+        int width;
+        int height;
+    } range, diameter;
+
     bool sBgnd;
     int nBackground;
     void setBackground();
-    void lookForCenter(MethodCentre method);
-    void centreMax();
-    void centreIntegrall();
-    MethodCentre methodCenter;
+    void lookForCenter(MethodCenter method);
+    void max();
+    void centerMax();
+    void centerIntegrall();
+    void centrerMoments();
+    MethodCenter methodCenter;
+    MethodDiameter methodDiameter;
     void getFrame();
     void subtractBackground();
-    int centre[2];// 0 - x, 1 - y
-    int maxP[3]; // 0 - x, 1 - y, P
-    int diameterMas[6]; // 0 - x1, 1 - x2, 2 - y2, 3 - y2, 4 - levelX, 5 - levelY
+
+    struct Point // в пикселях
+    {
+        Point(): x(0), y(0) {}
+        int x;
+        int y;
+    } center;
+
+    struct Max // в попугаях
+    {
+        Max(): x(0), y(0), power(0) {}
+        int x;
+        int y;
+        int power;
+    } maxPower;
+
+    struct Edge
+    {
+        Edge(): x1(0), x2(0), y1(0), y2(0), levelX(0), levelY(0){}
+        int x1;
+        int x2;
+        int y1;
+        int y2;
+        int levelX;
+        int levelY;
+    } edge;
+
+    struct DiameterSigma
+    {
+        DiameterSigma() {}
+        double d = 0;
+        double dx = 0;
+        double dy = 0;
+        double dxy = 0;
+        double dSigmaBig = 0;
+        double dSigmaSmall = 0;
+        double phi = 0;
+    } diameterSigma;
+
     double sliceLevel;
-    void diameter();
+    void lookForDiamter(MethodDiameter method);
+    void diameterSlice();
+    void diameterSecondMoments();
     void createAxis();
     QQueue<Sections> averageQueue;
     int nAverage;
     int averageState;
-    void average();
+    void averageSec();
+    void averageFrameFunction();
+    void average(MethodDiameter method);
+    void summFrame(const double **frame1, const double **frame2, double **frameOut);
+    void minusFrame(const double **frame1, const double **frame2, double **frameOut);
+    void multFrame(const double **frame, double d, double **frameOut);
+    double ** averageFrame;
+    QQueue<double **> frameQueue;
     bool isAverage;
-    void frameCopy( float**frame1, float **frame2);
+    void frameCopy(double **frame1, double **frameOut);
+    void frameClear(double **frame);
+    int cutLevel;
 
+    void summFrame(double **frame1, double **frame2, double **frameOut);
+    void minusFrame(double **frame1, double **frame2, double **frameOut);
+    void multFrame(double **frame, double d, double **frameOut);
+    double **newFrame();
+    void deleteFrame(double **frame);
 public slots:
     void setSliceLevel(double slicelevel);
     void saveBackground(int n);
@@ -126,5 +198,6 @@ signals:
     void lifeStartOk();
     void disconnectCam();
 };
+
 
 #endif // LIFE_H
