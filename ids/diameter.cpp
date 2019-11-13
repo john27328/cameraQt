@@ -76,6 +76,8 @@ void Life::diameterSlice()
 
 void Life::diameterSecondMoments()
 {
+    using Long = __int128;
+    //using Long = long long;
     //sigma^2 = int(rho^2 * w(rho, phi), rho, phi) /  int(w(rho, phi), rho, phi)
     //sigma^2_x = int((x - x0)^2 * w(x,y), x, y) / int(w(x,y), x, y)
     //sigma^2_y = int((y - y0)^2 * w(x,y), x, y) / int(w(x,y), x, y)
@@ -92,31 +94,34 @@ void Life::diameterSecondMoments()
     int dy = edge.y2 - edge.y1;
 
     int cut = pow(2, getBits()) * cutLevel / 100.;
-    __int128 ax = 0;
-    __int128 ay = 0;
-    __int128 axy = 0;
-    __int128 b = 0;
-    int x1 = center.x - dx / 2 * 3;
-    int x2 = center.x + dx / 2 * 3;
-    int y1 = center.y - dy / 2 * 3;
-    int y2 = center.y + dy / 2 * 3;
+    Long ax = 0;
+    Long ay = 0;
+    Long axy = 0;
+    Long b = 0;
+    int N = 3;
+    int x1 = center.x - dx / 2. * N;
+    int x2 = center.x + dx / 2. * N;
+    int y1 = center.y - dy / 2. * N;
+    int y2 = center.y + dy / 2. * N;
     if (x1 < 0) x1 = 0;
-    if (x2 > range.width) x2 = range.width;
+    if (x2 > range.width) x2 = range.width - 1;
     if (y1 < 0) y1 = 0;
-    if (y2 > range.height) y2 = range.height;
-    for (int x = x1; x < x2; x++) {
-        for (int y = y1; y < y2; y++) {
-            if (frame[x][y] > cut) {
-                ax += static_cast<__int128>(pow(x-center.x,2) * frame[x][y]);
-                ay += static_cast<__int128>(pow(y-center.y,2) * frame[x][y]);
-                axy += static_cast<__int128>((x - center.x) * (y - center.y) * frame[x][y]);
-                b += static_cast<__int128>(frame[x][y]);
-            }
-
+    if (y2 > range.height) y2 = range.height - 1;
+    for (int x = x1; x <= x2; x++) {
+        for (int y = y1; y <= y2; y++) {
+            ax += static_cast<Long>(pow(x-center.x,2) * frame[x][y]);
+            ay += static_cast<Long>(pow(y-center.y,2) * frame[x][y]);
+            axy += static_cast<Long>((x - center.x) * (y - center.y) * frame[x][y]);
+            b += static_cast<Long>(frame[x][y]);
         }
         //qDebug() << ax<<ay<<axy;
     }
 
+    Long S = 0;
+    for(int i = 0; i < range.width; i++)
+        for(int j = 0; j < range.height; j++)
+            S += frame[i][j];
+    //qDebug() << S << b;
     //d = ) * sigma
     //dx = 4 * sigma_x
     //dy = 4 * sigma_y
