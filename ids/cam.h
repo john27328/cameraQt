@@ -1,7 +1,7 @@
 #ifndef CAM_H
 #define CAM_H
 #include <QDebug>
-//#include <windows.h>
+#include <windows.h>
 #include <math.h>
 #include <QString>
 

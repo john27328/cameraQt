@@ -19,7 +19,7 @@ Life::~Life()
     stop = 1;
 
     delete  cam;
-    sleep(0.100);
+    Sleep(100);
     qDebug() << "delete Life";
 }
 
@@ -56,9 +56,13 @@ int Life::setMerhodDiameter(int i)
 void Life::initCamera(int c, QString &model, QString &serial)
 {
     DBF("void Life::initCamera(int c, QString &model, QString &serial)");
-
+    if (c)
+    {
+        IdsCam::initCum(&cam, model, serial);
+    }
+    else {
         TestCam::initCum(&cam, model, serial);
-
+    }
 
     if(cam){
         range.width = cam->getWidth();
@@ -89,7 +93,7 @@ void Life::initCamera(int c, QString &model, QString &serial)
     }
     else{
         stop = 1;
-        sleep(0.100);
+        Sleep(100);
         delete pSectionX;
         pSectionX = nullptr;
         delete pSectionY;

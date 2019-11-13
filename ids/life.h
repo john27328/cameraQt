@@ -2,9 +2,9 @@
 #define LIFE_H
 #include <QThread>
 #include <math.h>
-//#include "idscam.h"
+#include "idscam.h"
 #include "testcam.h"
-//#include "windows.h"
+#include "windows.h"
 #include <QVector>
 #include <QQueue>
 #include <QDebug>

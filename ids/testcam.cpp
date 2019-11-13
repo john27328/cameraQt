@@ -91,7 +91,7 @@ int TestCam::getFrame(double **frame)
     auto begin = std::chrono::steady_clock::now();
     static int k = 0;
     k = (k + 10)%2000;
-    sleep(0);
+    Sleep(100);
     double x;
     double y;
     double a = 10 * expCam;
