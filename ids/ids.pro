@@ -44,9 +44,9 @@ HEADERS += \
     life.h \
     qcustomplot.h \
     testcam.h \
-        widget.h \
-    C:/Program Files/IDS/uEye/Develop/include/uEye.h \
-    C:/Program Files/IDS/uEye/Develop/include/uEye.h
+    widget.h \
+    'C:/Program Files/IDS/uEye/Develop/include/uEye.h' \
+    'C:/Program Files/IDS/uEye/Develop/include/uEye.h'
 
 FORMS += \
         widget.ui

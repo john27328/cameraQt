@@ -1,7 +1,7 @@
 #ifndef IDSCAM_H
 #define IDSCAM_H
 
-#include "ueye.h"
+#include "uEye.h"
 #include "cam.h"
 #include <QInputDialog>
 #include "debug.h"
