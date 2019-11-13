@@ -179,6 +179,7 @@ private:
     QQueue<double **> frameQueue;
     bool isAverage;
     void frameCopy(double **frame1, double **frameOut);
+    void frameClear(double **frame);
     int cutLevel;
 
     void summFrame(double **frame1, double **frame2, double **frameOut);

@@ -177,6 +177,10 @@ void Life::setSubtractBackground(bool value)
 void Life::startStopAverage(bool start, int n)
 {
     DBF("void Life::startStopAverage(bool start, int n)");
+    while (!frameQueue.isEmpty()) {
+        auto tmp = frameQueue.dequeue();
+        deleteFrame(tmp);
+    }
     if(start){
         averageQueue.clear();
         nAverage = n;
@@ -186,6 +190,7 @@ void Life::startStopAverage(bool start, int n)
             Sections tmp = {*pSectionX, *pSectionY};
             averageQueue.enqueue(tmp);
             averageState = 0;
+            frameQueue.enqueue(newFrame());
         }
     }
     else {
@@ -195,6 +200,7 @@ void Life::startStopAverage(bool start, int n)
     }
     averageSections.x = *pSectionX;
     averageSections.y = *pSectionY;
+    frameClear(averageFrame);
     //qDebug()<<"startStopAverage end";
 }
 
@@ -216,16 +222,16 @@ void Life::averageSec()
 
 void Life::averageFrameFunction()
 {
-    auto tmpFrame = newFrame();
-    multFrame(frame, 1 / nAverage, tmpFrame);
+    double **tmpFrame = newFrame();
+    multFrame(frame, 1. / nAverage, tmpFrame);
     frameQueue.enqueue(tmpFrame);
     summFrame(averageFrame, tmpFrame, averageFrame);
 
     tmpFrame = frameQueue.dequeue();
-    if(tmpFrame){
-        minusFrame(averageFrame, tmpFrame, averageFrame);
-        deleteFrame(tmpFrame);
-    }
+    minusFrame(averageFrame, tmpFrame, averageFrame);
+    deleteFrame(tmpFrame);
+    frameCopy(averageFrame, frame);
+    averageState = averageState <= 100 ? averageState + 100 / nAverage : 0;
 }
 
 void Life::average(Life::MethodDiameter method)
@@ -233,11 +239,15 @@ void Life::average(Life::MethodDiameter method)
     if(cam){
         switch (method) {
         case MethodDiameter::DiameterSlice:
+            getSections();
             averageSec();
             break;
         case MethodDiameter::diameterSecondMoments:
-        averageFrameFunction();
-        break;
+            averageFrameFunction();
+            getSections();
+            averageSections.x = *pSectionX;
+            averageSections.y = *pSectionY;
+            break;
         }
     }
 }
@@ -266,8 +276,11 @@ void Life::multFrame(double ** frame, double d, double **frameOut)
 double **Life::newFrame()
 {
     double ** tmp = new double *[range.width];
-    for(int i = 0; i < range.width; i++)
+    for(int i = 0; i < range.width; i++){
         tmp[i] = new double[range.height];
+        for(int j = 0; j < range.height; j++)
+            tmp[i][j] = 0;
+    }
     return tmp;
 }
 
@@ -276,6 +289,7 @@ void Life::deleteFrame(double **frame)
     for(int i = 0; i < range.width; i++)
         delete[] frame[i];
     delete[] frame;
+    frame = nullptr;
 }
 
 void Life::frameCopy(double **frame1, double **frameOut)
@@ -283,6 +297,15 @@ void Life::frameCopy(double **frame1, double **frameOut)
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height; j++) {
             frameOut[i][j] = frame1[i][j];
+        }
+    }
+}
+
+void Life::frameClear(double **frame)
+{
+    for (int i = 0; i < range.width; i++) {
+        for (int j = 0; j < range.height; j++) {
+            frame[i][j] = 0;
         }
     }
 }
@@ -346,10 +369,10 @@ void Life::getFrame()
             lookForCenter(methodCenter);
             //        int x, y;
             //        getCentre(x,y);
-            getSections();
             if(isAverage)
                 average(methodDiameter);
             else {
+                getSections();
                 averageSections.x = *pSectionX;
                 averageSections.y = *pSectionY;
             }
