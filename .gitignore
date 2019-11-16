@@ -41,3 +41,11 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+ids/.qmake.stash
+
+ids/.vs/ids/v16/
+
+ids/x64/Debug/
+
+ids/x64/Release/qmake/
