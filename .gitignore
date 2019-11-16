@@ -43,3 +43,11 @@ target_wrapper.*
 CMakeLists.txt.user*
 
 *.doc#
+
+ids/.qmake.stash
+
+ids/.vs/ids/v16/
+
+ids/x64/Debug/
+
+ids/x64/Release/qmake/

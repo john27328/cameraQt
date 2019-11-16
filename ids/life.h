@@ -114,7 +114,7 @@ private:
     int nBackground;
     void setBackground();
     void lookForCenter(MethodCenter method);
-    void max();
+    //void max();
     void centerMax();
     void centerIntegrall();
     void centrerMoments();
