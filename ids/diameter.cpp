@@ -76,7 +76,6 @@ void Life::diameterSlice()
 
 void Life::diameterSecondMoments()
 {
-    using Long = __int128;
     //using Long = long long;
     //sigma^2 = int(rho^2 * w(rho, phi), rho, phi) /  int(w(rho, phi), rho, phi)
     //sigma^2_x = int((x - x0)^2 * w(x,y), x, y) / int(w(x,y), x, y)
@@ -93,7 +92,6 @@ void Life::diameterSecondMoments()
     int dx = edge.x2 - edge.x1;
     int dy = edge.y2 - edge.y1;
 
-    int cut = pow(2, getBits()) * cutLevel / 100.;
     Long ax = 0;
     Long ay = 0;
     Long axy = 0;

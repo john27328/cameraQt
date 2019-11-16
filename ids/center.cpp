@@ -84,10 +84,10 @@ void Life::centrerMoments()
     // x0 = integral(x * w(x,y), x,y) / int(w(x,y),x,y)
     // a = integral(x * w(x,y), x,y)
     // b = integral(w(x,y),x,y)
-    __int128 ax = 0;
-    __int128 b = 0;
-    __int128 ay = 0;
-    __int128 w = 0;
+	Long ax = 0;
+	Long b = 0;
+	Long ay = 0;
+	Long w = 0;
     for (int i = 0; i < range.width; i++) {
         for (int j = 0; j < range.height ; j++) {
             w = frame[i][j] < cut ? 0 : frame[i][j];

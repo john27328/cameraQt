@@ -82,7 +82,6 @@ int TestCam::stopLive()
     return 1;
 }
 
-#include <unistd.h>
 int TestCam::getFrame(double **frame)
 {
     DBF("int TestCam::getFrame(float **frame)");

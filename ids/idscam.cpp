@@ -233,7 +233,7 @@ int IdsCam::stopLive()
     return 0;
 }
 
-int IdsCam::getFrame(float **frame)
+int IdsCam::getFrame(double **frame)
 {
     // захват с ожиданием
     DWORD dwRet = WaitForSingleObject(hEvent, 1000);

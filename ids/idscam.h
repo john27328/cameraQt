@@ -93,17 +93,17 @@ int ID = 0;
     ~IdsCam();
     QString getModel();
     QString getSerial();
-    int setFPS(double &fps);
-    int setExp(double &exp);
-    int getFPS(double &fps);
-    int getExp(double &exp);
-    int getRangeFPS(double &minFPS, double &maxFPS);
-    int getRangeExp(double &minExp, double &maxExp);
-    int startLive();
-    int stopLive();
-    int getFrame(float **frame);
-    bool statusCam(); // - 1 - ok
-    bool statusLife(); // - 1 - ok
+    int setFPS(double &fps) override;
+    int setExp(double &exp) override;
+    int getFPS(double &fps) override;
+    int getExp(double &exp) override;
+    int getRangeFPS(double &minFPS, double &maxFPS) override;
+    int getRangeExp(double &minExp, double &maxExp) override;
+    int startLive() override;
+    int stopLive() override;
+    int getFrame(double**frame) override;
+    bool statusCam() override; // - 1 - ok
+    bool statusLife() override; // - 1 - ok
 
 private:
     IdsCam(int ID);

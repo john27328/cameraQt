@@ -1,5 +1,4 @@
 #include "life.h"
-#include <unistd.h>
 
 Life::Life(): frame(nullptr), frameFinal(nullptr) ,background(nullptr), pSectionX(nullptr),
     pSectionY(nullptr), pAxisX(nullptr), pAxisY(nullptr), cam(nullptr), isAverage(0)
@@ -49,6 +48,7 @@ int Life::setMerhodDiameter(int i)
         return 1;
         break;
     default:
+		return 0;
         break;
     }
 }

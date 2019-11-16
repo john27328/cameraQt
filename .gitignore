@@ -51,3 +51,9 @@ ids/.vs/ids/v16/
 ids/x64/Debug/
 
 ids/x64/Release/qmake/
+
+ids/x64/Release/
+
+ids/debug/
+
+ids/release/

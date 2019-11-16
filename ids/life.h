@@ -18,7 +18,7 @@ Q_OBJECT
 public:
     Life();
     ~Life();
-
+	using Long = long long;
 
     int getWidth() const;
     int getWidth_mm() const;
